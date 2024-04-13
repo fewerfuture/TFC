@@ -20,7 +20,7 @@ CREATE TABLE `ubicacion` (
 CREATE TABLE `usuario` (
   `usuario_id` int UNSIGNED NOT NULL PRIMARY KEY,
   `Nombre` varchar(50) NOT NULL,
-  `Correo` varchar(255) NOT NULL CHECK (`Correo` like '%_@__%.__%'),
+  `Correo` varchar(255) NOT NULL CHECK (`Correo` like '%_@__%.__%') UNIQUE,
   `Contrasena` varchar(25) NOT NULL CHECK (char_length(`Contrasena`) >= 8),
   `FK_Nivel_Escalada_ID` int(10) UNSIGNED DEFAULT NULL,
   `FK_Rol_ID` int(10) UNSIGNED DEFAULT NULL,
