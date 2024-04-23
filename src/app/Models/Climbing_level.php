@@ -6,13 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Rol extends Model
+class Climbing_level extends Model
 {
     use HasFactory;
 
+    protected $table = 'climbing_level';
+
     #region relaciones
     public function Usuarios() : BelongsToMany{
-        return $this->BelongsToMany(Rol::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    public function Eventos() : BelongsToMany{
+        return $this->belongsToMany(Event::class);
     }
     #endregion
 }

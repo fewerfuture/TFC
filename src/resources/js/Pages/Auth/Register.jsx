@@ -5,13 +5,17 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import GeneralLayout from '@/Layouts/GeneralLayout';
+import Header from '@/Components/Header';
+import SelectInput from '@/Components/SelectInput';
 
-export default function Register() {
+export default function Register({climbing_level}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
+        climbing_level: '',
     });
 
     useEffect(() => {
@@ -22,11 +26,14 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-
         post(route('register'));
     };
 
     return (
+        <GeneralLayout>
+            <Header
+                register = {true}
+            />
         <GuestLayout>
             <Head title="Register" />
 
@@ -43,6 +50,7 @@ export default function Register() {
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
                         required
+                        placeholder="Username"
                     />
 
                     <InputError message={errors.name} className="mt-2" />
@@ -60,6 +68,7 @@ export default function Register() {
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                         required
+                        placeholder="Example@example.com"
                     />
 
                     <InputError message={errors.email} className="mt-2" />
@@ -77,6 +86,7 @@ export default function Register() {
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         required
+                        placeholder="Minimum 8 letters"
                     />
 
                     <InputError message={errors.password} className="mt-2" />
@@ -99,6 +109,21 @@ export default function Register() {
                     <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
+                <div className='mt-4'>
+                    <InputLabel htmlFor="climbing_level" value="Climbing level" />
+
+                    <SelectInput
+                        id="climbing_level"
+                        name="climbing_level"
+                        optionsArray={climbing_level}
+                        className='mt-1 block w-full'
+                        onChange={(e) => setData('climbing_level', e.target.value)}
+                    />
+
+                    <InputError message={errors.climbing_level} className="mt-2" />
+
+                </div>
+
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href={route('login')}
@@ -107,11 +132,16 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton
+                        className="ms-4"
+                        disabled={processing}
+                        type="submit"
+                    >
                         Register
                     </PrimaryButton>
                 </div>
             </form>
         </GuestLayout>
+        </GeneralLayout>
     );
 }

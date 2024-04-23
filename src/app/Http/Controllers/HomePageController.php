@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evento;
-use App\Http\Requests\StoreEventoRequest;
-use App\Http\Requests\UpdateEventoRequest;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class EventoController extends Controller
+class HomePageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $user = auth()->user();
+
+        return Inertia::render('HomePage', [
+            'auth' => $user
+        ]);
     }
 
     /**
@@ -27,7 +30,7 @@ class EventoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEventoRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +38,7 @@ class EventoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Evento $evento)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +46,7 @@ class EventoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Evento $evento)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +54,7 @@ class EventoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventoRequest $request, Evento $evento)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +62,7 @@ class EventoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Evento $evento)
+    public function destroy(string $id)
     {
         //
     }

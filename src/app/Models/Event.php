@@ -8,25 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Evento extends Model
+class Event extends Model
 {
     use HasFactory;
 
+    protected $table = 'event';
+
     #region relaciones
     public function Nivel_Escalada() : HasOne {
-        return $this->hasOne(Nivel_Escalada::class);
+        return $this->hasOne(Climbing_level::class);
     }
 
     public function Ubicacion() : HasOne {
-        return $this->hasOne(Ubicacion::class);
+        return $this->hasOne(Location::class);
     }
 
     public function Creador() : HasOne {
-        return $this->hasOne(Usuario::class);
+        return $this->hasOne(User::class);
     }
 
     public function Participantes() : BelongsToMany {
-        return $this->belongsToMany(Usuario::class);
+        return $this->belongsToMany(User::class);
     }
     #endregion
 }

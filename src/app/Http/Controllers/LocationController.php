@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rol;
-use App\Http\Requests\StoreRolRequest;
-use App\Http\Requests\UpdateRolRequest;
+use App\Models\Location;
+use App\Http\Requests\StoreUbicacionRequest;
+use App\Http\Requests\UpdateUbicacionRequest;
 
-class RolController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class RolController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRolRequest $request)
+    public function store(StoreUbicacionRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class RolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Rol $rol)
+    public function show(Location $ubicacion)
     {
         //
     }
@@ -43,7 +43,7 @@ class RolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rol $rol)
+    public function edit(Location $ubicacion)
     {
         //
     }
@@ -51,7 +51,7 @@ class RolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRolRequest $request, Rol $rol)
+    public function update(UpdateUbicacionRequest $request, Location $ubicacion)
     {
         //
     }
@@ -59,7 +59,7 @@ class RolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rol $rol)
+    public function destroy(Location $ubicacion)
     {
         //
     }

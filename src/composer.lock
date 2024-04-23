@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f445866f2fb68869b8de9b01be8d722f",
+    "content-hash": "3128d130dfbf2e0c0811cde1cfe225f4",
     "packages": [
         {
             "name": "brick/math",
@@ -5549,6 +5549,41 @@
                 }
             ],
             "time": "2024-03-19T11:56:30+00:00"
+        },
+        {
+            "name": "tebe/yii2-inertia",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tbreuss/yii2-inertia.git",
+                "reference": "2c8bcb5d4616e3ddffa79a3b6fac9a17fca4e98b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tbreuss/yii2-inertia/zipball/2c8bcb5d4616e3ddffa79a3b6fac9a17fca4e98b",
+                "reference": "2c8bcb5d4616e3ddffa79a3b6fac9a17fca4e98b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "tebe\\inertia\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "The Yii 2 adapter for Inertia.js",
+            "support": {
+                "issues": "https://github.com/tbreuss/yii2-inertia/issues",
+                "source": "https://github.com/tbreuss/yii2-inertia/tree/master"
+            },
+            "time": "2020-04-30T15:25:22+00:00"
         },
         {
             "name": "tightenco/ziggy",

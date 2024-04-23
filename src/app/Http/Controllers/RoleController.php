@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Nivel_Escalada;
-use App\Http\Requests\StoreNivel_EscaladaRequest;
-use App\Http\Requests\UpdateNivel_EscaladaRequest;
+use App\Models\Role;
+use App\Http\Requests\StoreRolRequest;
+use App\Http\Requests\UpdateRolRequest;
 
-class NivelEscaladaController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class NivelEscaladaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNivel_EscaladaRequest $request)
+    public function store(StoreRolRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class NivelEscaladaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Nivel_Escalada $nivel_Escalada)
+    public function show(Role $rol)
     {
         //
     }
@@ -43,7 +43,7 @@ class NivelEscaladaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Nivel_Escalada $nivel_Escalada)
+    public function edit(Role $rol)
     {
         //
     }
@@ -51,7 +51,7 @@ class NivelEscaladaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNivel_EscaladaRequest $request, Nivel_Escalada $nivel_Escalada)
+    public function update(UpdateRolRequest $request, Role $rol)
     {
         //
     }
@@ -59,7 +59,7 @@ class NivelEscaladaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Nivel_Escalada $nivel_Escalada)
+    public function destroy(Role $rol)
     {
         //
     }

@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evento', function (Blueprint $table) {
+        Schema::create('event', function (Blueprint $table) {
             $table->id();
-            $table->string('Nombre');
-            $table->dateTime('Fecha_Inicio');
-            $table->dateTime('Fecha_Fin');
-            $table->string('Tipo');
-            $table->boolean('Finalizado');
+            $table->string('name');
+            $table->dateTime('start_date');
+            $table->dateTime('finish_date');
+            $table->string('type');
+            $table->boolean('finished');
 
-            $table->foreignId('ubicacion_id')->nullable()->constrained('ubicacion')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('location_id')->nullable()->constrained('location')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreignId('nivel_id')->nullable()->constrained('nivel_escalada')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('level_id')->nullable()->constrained('climbing_level')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreignId('usuario_id')->nullable()->constrained('usuario')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('user')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evento');
+        Schema::dropIfExists('event');
     }
 };

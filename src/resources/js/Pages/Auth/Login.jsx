@@ -6,6 +6,8 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import GeneralLayout from '@/Layouts/GeneralLayout';
+import Header from '@/Components/Header';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -27,6 +29,11 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
+        <>
+        <GeneralLayout>
+            <Header
+                logIn = {true}
+            />
         <GuestLayout>
             <Head title="Log in" />
 
@@ -34,12 +41,12 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="correo" value="Email" />
 
                     <TextInput
-                        id="email"
+                        id="correo"
                         type="email"
-                        name="email"
+                        name="correo"
                         value={data.email}
                         className="mt-1 block w-full"
                         autoComplete="username"
@@ -93,5 +100,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form>
         </GuestLayout>
+        </GeneralLayout>
+        </>
     );
 }

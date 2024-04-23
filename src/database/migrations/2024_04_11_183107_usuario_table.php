@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('usuario', function (Blueprint $table) {
+        Schema::create('user', function (Blueprint $table) {
             $table->id();
-            $table->string('Nombre');
-            $table->string('Correo')->unique();
-            $table->string('Contraseña');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->rememberToken()->nullable();
 
-            //$table->unsignedInteger('rol_id')->nullable();
-            $table->foreignId('rol_id')->nullable()->constrained('rol')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('role_id')->nullable()->constrained('role')->cascadeOnDelete()->cascadeOnUpdate();
 
-            //$table->unsignedInteger('nivel_id')->nullable();
-            $table->foreignId('nivel_id')->nullable()->constrained('nivel_escalada')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('level_id')->nullable()->constrained('climbing_level')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('usuario');
+        Schema::dropIfExists('user');
     }
 };

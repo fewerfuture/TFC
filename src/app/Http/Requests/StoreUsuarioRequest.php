@@ -11,7 +11,7 @@ class StoreUsuarioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreUsuarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'Nombre' => ['required', 'string'],
+            'Correo' => ['required', 'string', 'email'],
+            'Contraseña' => ['required', 'string', 'min:8'],
+            'rol_id' => ['required', 'integer', ''],
+            'nivel_id' => ['required', 'integer'],
         ];
     }
 }

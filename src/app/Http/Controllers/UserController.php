@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\UpdateUsuarioRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class HomePage extends Controller
+
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +24,7 @@ class HomePage extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -27,13 +32,13 @@ class HomePage extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $usuario)
     {
         //
     }
@@ -41,7 +46,7 @@ class HomePage extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $usuario)
     {
         //
     }
@@ -49,7 +54,7 @@ class HomePage extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUsuarioRequest $request, User $usuario)
     {
         //
     }
@@ -57,7 +62,7 @@ class HomePage extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $usuario)
     {
         //
     }

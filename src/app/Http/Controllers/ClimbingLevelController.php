@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ubicacion;
-use App\Http\Requests\StoreUbicacionRequest;
-use App\Http\Requests\UpdateUbicacionRequest;
+use App\Models\Climbing_level;
+use App\Http\Requests\StoreNivel_EscaladaRequest;
+use App\Http\Requests\UpdateNivel_EscaladaRequest;
 
-class UbicacionController extends Controller
+class ClimbingLevelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class UbicacionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUbicacionRequest $request)
+    public function store(StoreNivel_EscaladaRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class UbicacionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Ubicacion $ubicacion)
+    public function show(Climbing_level $nivel_Escalada)
     {
         //
     }
@@ -43,7 +43,7 @@ class UbicacionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ubicacion $ubicacion)
+    public function edit(Climbing_level $nivel_Escalada)
     {
         //
     }
@@ -51,7 +51,7 @@ class UbicacionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUbicacionRequest $request, Ubicacion $ubicacion)
+    public function update(UpdateNivel_EscaladaRequest $request, Climbing_level $nivel_Escalada)
     {
         //
     }
@@ -59,7 +59,7 @@ class UbicacionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ubicacion $ubicacion)
+    public function destroy(Climbing_level $nivel_Escalada)
     {
         //
     }

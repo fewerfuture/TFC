@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Ubicacion extends Model
+class Location extends Model
 {
     use HasFactory;
 
+    protected $table = 'location';
+
     #region relaciones
     public function Eventos() : BelongsToMany {
-        return $this->belongsToMany(Evento::class);
+        return $this->belongsToMany(Event::class);
     }
     #endregion
 }
