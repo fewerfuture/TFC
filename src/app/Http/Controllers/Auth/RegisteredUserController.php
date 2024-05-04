@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\Climbing_level;
 use App\Models\Role;
 use App\Models\User;
@@ -31,21 +32,15 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreUserRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'climbing_level' => 'required|integer',
-        ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
             'role_id' => Role::where('role_name', 'user')->get()->first()->id,
-            'level_id' => $request->climbing_level
+            'climbing_level_id' => $request->climbing_level
         ]);
 
         Auth::login($user);

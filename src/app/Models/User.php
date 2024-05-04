@@ -16,7 +16,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public $timestamps = false;
     protected $table = 'user';
 
     /**
@@ -29,7 +28,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'level_id',
+        'climbing_level_id',
+        'remember_token',
     ];
 
     /**
@@ -56,16 +56,17 @@ class User extends Authenticatable
         return $this->hasOne(Role::class);
     }
 
-    public function Nivel_Escalada() : HasOne {
-        return $this->hasOne(Climbing_level::class);
+    public function Climbing_level() : BelongsTo {
+        return $this->belongsTo(Climbing_Level::class);
     }
 
-    public function Evento() : BelongsToMany {
+    //User Model
+    public function CreatedEvents() : BelongsToMany {
         return $this->belongsToMany(Event::class);
     }
 
-    public function Eventos() : BelongsToMany {
-        return $this->belongsToMany(Event::class);
+    public function ParticipatingEvents() : BelongsToMany {
+        return $this->belongsToMany(Event::class, 'event_user', 'user_id', 'event_id');
     }
     #endregion
 }

@@ -18,5 +18,36 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        function({addUtilities}){
+            const newUtilities = {
+                ".scrollbar-thin" : {
+                    scrollbarWith : "thin",
+                },
+                ".scrollbar-color-white" : {
+                    scrollbarColor : "rgb(243 244 246) rgb(17 24 39)",
+
+                },
+                ".scrollbar-color-black" : {
+                    scrollbarColor : "rgb(17 24 39) rgb(243 244 246)",
+                },
+                ".scrollbar-webkit" : {
+                    "&::-webkit-scrollbar" : {
+                        width : "8px"
+                    },
+                    "&::-webkit-scrollbar-track" : {
+                        background : "white"
+                    },
+                    "&::-webkit-scrollbar-thumb" : {
+                        backgroundColor : "rgb(31 41 55)",
+                        borderRadius : "20px",
+                        border: "1px solid white"
+                    }
+                }
+            }
+
+            addUtilities(newUtilities, ["responsive", "hover"]);
+        }
+    ],
 };

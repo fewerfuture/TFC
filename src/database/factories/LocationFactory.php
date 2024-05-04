@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Rol>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ubicacion>
  */
-class RolFactory extends Factory
+class LocationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,9 @@ class RolFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->address(),
+            'latitude' => fake()->latitude(),
+            'longitude' => fake()->longitude(),
         ];
     }
 }

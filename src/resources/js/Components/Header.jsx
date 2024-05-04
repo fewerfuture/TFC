@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react"
 import ApplicationLogo from "./ApplicationLogo"
 import NavLink from "./NavLink"
 
@@ -6,11 +7,18 @@ export default function Header({homePage = false, events = false, aboutUs = fals
         <header className="p-4 m-auto col-span-3 border-b-2">
             <nav className="w-full h-full m-auto flex flex-row justify-between">
                 <ul className="flex flex-row gap-16 *:self-center">
-                    <li><ApplicationLogo className="w-10 h-10 fill-current text-gray-500"/></li>
+                    <li>
+                        <Link
+                            href={route('HomePage')}
+                        >
+                            <ApplicationLogo className="w-10 h-10 fill-current text-gray-500"/>
+                        </Link>
+
+                    </li>
                     <li>
                         <NavLink
                             active = {homePage}
-                            href = "/"
+                            href = {route('HomePage')}
                         >
                             Home Page
                         </NavLink>
@@ -18,6 +26,7 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                     <li>
                         <NavLink
                             active = {events}
+                            href={route('inprogress')}
                         >
                             Events
                         </NavLink>
@@ -25,6 +34,7 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                     <li>
                         <NavLink
                             active = {aboutUs}
+                            href={route('inprogress')}
                         >
                             About Us
                         </NavLink>

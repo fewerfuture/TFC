@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventoRequest;
 use App\Http\Requests\UpdateEventoRequest;
 use App\Models\Event;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(int $id)
     {
-        //
+        $event = Event::with(['Location', 'Climbing_level', 'Participants.Climbing_level', 'User'])->findOrFail($id);
+        return Inertia::render('Events/Event', [
+            'event' => $event,
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**

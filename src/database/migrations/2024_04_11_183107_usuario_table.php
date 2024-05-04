@@ -20,7 +20,9 @@ return new class extends Migration
 
             $table->foreignId('role_id')->nullable()->constrained('role')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreignId('level_id')->nullable()->constrained('climbing_level')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('climbing_level_id')->nullable()->constrained('climbing_level')->cascadeOnDelete()->cascadeOnUpdate();
+
+            $table->timestamps();
         });
     }
 

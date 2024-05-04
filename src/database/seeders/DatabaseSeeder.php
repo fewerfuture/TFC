@@ -15,11 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            //EventoSeeder::class,
-            NivelEscaladaSeeder::class,
-            RolSeeder::class,
-            //UbicacionSeeder::class,
-            UsuarioSeeder::class,
+            ClimbingLevelSeeder::class,
+            RoleSeeder::class,
+            LocationSeeder::class,
+            //UserSeeder::class,
+            //EventSeeder::class,
+            EventUserSeeder::class
         ]);
     }
 }

@@ -15,15 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->dateTime('start_date');
-            $table->dateTime('finish_date');
+            $table->dateTime('end_date');
             $table->string('type');
             $table->boolean('finished');
 
-            $table->foreignId('location_id')->nullable()->constrained('location')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('location_id')->nullable()->constrained('location');
 
-            $table->foreignId('level_id')->nullable()->constrained('climbing_level')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('climbing_level_id')->nullable()->constrained('climbing_level');
 
-            $table->foreignId('user_id')->nullable()->constrained('user')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->nullable()->constrained('user');
+
+            $table->timestamps();
         });
     }
 

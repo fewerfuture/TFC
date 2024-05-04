@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,9 +32,16 @@ class AuthenticatedSessionController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        if(Auth::attempt($credentials)){
-            return redirect(RouteServiceProvider::HOME);
+        if (!Auth::attempt($credentials, $request->remember)) {
+
+            $error = User::where('email', $request->email)->exists() ?
+            ['password' => 'The password does not match. Please try again.'] :
+            ['email' => 'The email does not exist. Please register first.'];
+
+            return redirect(route('login'))->withErrors($error);
         }
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
@@ -43,6 +50,6 @@ class AuthenticatedSessionController extends Controller
     public function destroy(): RedirectResponse
     {
         Auth::logout();
-        return redirect('/');
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

@@ -5,20 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Climbing_level extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $table = 'climbing_level';
 
     #region relaciones
-    public function Usuarios() : BelongsToMany{
-        return $this->belongsToMany(User::class);
+    public function User() : HasMany{
+        return $this->hasMany(User::class);
     }
 
-    public function Eventos() : BelongsToMany{
-        return $this->belongsToMany(Event::class);
+    public function Events() : HasMany {
+        return $this->hasMany(Event::class);
     }
     #endregion
 }

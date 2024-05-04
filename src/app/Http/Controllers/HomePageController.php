@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Climbing_level;
+use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class HomePageController extends Controller
@@ -12,10 +15,10 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $eventsData = Event::with(['Climbing_level', 'Location', 'User'])->get();
 
         return Inertia::render('HomePage', [
-            'auth' => $user
+            'eventData' => $eventsData
         ]);
     }
 

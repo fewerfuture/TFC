@@ -2,33 +2,44 @@
 
 namespace App\Models;
 
-use App\Policies\NivelEscaladaPolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+
 
 class Event extends Model
 {
     use HasFactory;
 
     protected $table = 'event';
+    protected $fillable = [
+        'name',
+        'start_date',
+        'end_date',
+        'type',
+        'finished',
+        'location_id',
+        'climbing_level_id',
+        'user_id',
+    ];
 
     #region relaciones
-    public function Nivel_Escalada() : HasOne {
-        return $this->hasOne(Climbing_level::class);
+    public function Climbing_level() : BelongsTo {
+        return $this->belongsTo(Climbing_level::class);
     }
 
-    public function Ubicacion() : HasOne {
-        return $this->hasOne(Location::class);
+    public function Location() : BelongsTo {
+        return $this->belongsTo(Location::class);
     }
 
-    public function Creador() : HasOne {
-        return $this->hasOne(User::class);
+    //Event model
+    public function User() : BelongsTo {
+        return $this->belongsTo(User::class);
     }
 
-    public function Participantes() : BelongsToMany {
-        return $this->belongsToMany(User::class);
+    public function Participants() : BelongsToMany {
+        return $this->belongsToMany(User::class, 'event_user', 'event_id', 'user_id');
     }
     #endregion
 }
