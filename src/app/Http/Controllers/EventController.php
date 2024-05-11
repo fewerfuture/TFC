@@ -4,7 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventoRequest;
 use App\Http\Requests\UpdateEventoRequest;
+use App\Models\Climbing_level;
 use App\Models\Event;
+use App\Models\Location;
+use App\Providers\RouteServiceProvider;
+use DateTime;
+use Illuminate\Support\Facades\Auth;
+
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -25,7 +31,10 @@ class EventController extends Controller
      */
     public function create()
     {
-
+        return Inertia::render('Events/CreateEvent', [
+            'climbing_level' => Climbing_level::get(),
+            'locations' => Location::get(),
+        ]);
     }
 
     /**
@@ -33,7 +42,27 @@ class EventController extends Controller
      */
     public function store(StoreEventoRequest $request)
     {
-        //
+
+        $newStartDate = new DateTime($request->start_date);
+        $newEndDate = new DateTime($request->end_date);
+
+        $startDateFormated = $newStartDate->format('Y-m-d H:i:s');
+        $endDateFormated = $newEndDate->format('Y-m-d H:i:s');
+
+        $event = Event::create([
+            'name' => $request->name,
+            'start_date' => $startDateFormated,
+            'end_date' => $endDateFormated ,
+            'type' => $request->type,
+            'finished' => $request->finished,
+            'location_id' => $request->location,
+            'climbing_level_id' => $request->climbing_level,
+            'user_id' => Auth::id(),
+        ]);
+
+        $event->Participants()->attach(Auth::id());
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
@@ -47,24 +76,65 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Event $evento)
+    public function edit(Event $event)
     {
-        //
+        $completeEvent = Event::with(['Location', 'Climbing_level', 'User'])->findOrFail($event->id);
+
+        if(Auth::id() != $completeEvent->user->id){
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        return Inertia::render('Events/UpdateEvent', [
+            'event' => $completeEvent,
+            'climbing_level' => Climbing_level::get(),
+            'locations' => Location::get(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventoRequest $request, Event $evento)
+    public function update(UpdateEventoRequest $request, Event $event)
     {
-        //
+        $userEvent = Event::with(['User'])->findOrFail($event->id);
+
+        if(Auth::id() != $userEvent->user->id){
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        $newStartDate = new DateTime($request->start_date);
+        $newEndDate = new DateTime($request->end_date);
+
+        $startDateFormated = $newStartDate->format('Y-m-d H:i:s');
+        $endDateFormated = $newEndDate->format('Y-m-d H:i:s');
+
+        $event->update([
+            'name' => $request->name,
+            'start_date' => $startDateFormated,
+            'end_date' => $endDateFormated ,
+            'type' => $request->type,
+            'location_id' => $request->location,
+            'climbing_level_id' => $request->climbing_level,
+        ]);
+
+        return $this->index($event->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $evento)
+    public function destroy(Event $event)
     {
-        //
+        $userEvent = Event::with(['User'])->findOrFail($event->id);
+
+        if(Auth::id() != $userEvent->user->id){
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        $userEvent->Participants()->detach(Auth::id());
+
+        $userEvent->delete();
+
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

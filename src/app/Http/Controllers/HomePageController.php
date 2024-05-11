@@ -15,7 +15,10 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        $eventsData = Event::with(['Climbing_level', 'Location', 'User'])->get();
+        $eventsData = Event::where('finished', false)
+            ->with(['Climbing_level', 'Location', 'User'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         return Inertia::render('HomePage', [
             'eventData' => $eventsData

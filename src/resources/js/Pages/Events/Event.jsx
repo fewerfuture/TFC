@@ -1,9 +1,20 @@
 import Header from "@/Components/Header";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link } from "@inertiajs/react";
-
+import { useState } from "react";
+import Modal from '@/Components/Modal';
 
 export default function Event({auth, event }){
+
+    const [confirmingEventDeletion, setConfirmingEventDeletion] = useState(false);
+
+    const confirmEventDeletion = () => {
+        setConfirmingEventDeletion(true);
+    };
+
+    const closeModal = () => {
+        setConfirmingEventDeletion(false);
+    }
 
     let [startDate, startHour] = event.start_date.split(' ')
     let [startHourSplit, startsMinuteSplit] = startHour.split(':')
@@ -14,11 +25,11 @@ export default function Event({auth, event }){
     let endHourNoSeconds = `${endHourSplit}:${endsMinuteSplit}`
 
     return (
-
+            <>
             <GeneralLayout>
                 <Head title={"Event - " + event.user.name} />
                 <Header
-                    event = {true}
+                    events = {true}
                     auth={auth.user}
                 />
 
@@ -28,12 +39,12 @@ export default function Event({auth, event }){
                         <p className="text-4xl self-center"> {event.type} </p>
                         <p className="text-4xl self-center"> {event.climbing_level.grade} </p>
                         <p className="text-4xl self-end text-center">
-                            {startDate}
-                            <p>{startHourNoSeconds}</p>
+                            {startDate}<br/>
+                            {startHourNoSeconds}
                         </p>
                         <p className="text-4xl self-end text-center">
-                            {endDate}
-                            <p> {endHourNoSeconds} </p>
+                            {endDate}<br/>
+                            {endHourNoSeconds}
                         </p>
                     </div>
                     <div className=" w-full">
@@ -68,16 +79,18 @@ export default function Event({auth, event }){
                                 <div>
                                     <Link
                                         className="bg-green-500 text-white py-2 px-4 rounded mr-2"
-                                        href={route('inprogress')}
+                                        href={route('updateEvent', event)}
                                     >
                                         Edit
                                     </Link>
-                                    <Link
-                                        className="bg-red-500 text-white py-2 px-4 rounded"
-                                        href={route('inprogress')}
+
+                                    <button
+                                        type="button"
+                                        className="bg-red-500 text-white py-1.5 px-4 rounded"
+                                        onClick={confirmEventDeletion}
                                     >
                                         Delete
-                                    </Link>
+                                    </button>
                                 </div>
                             </>
                             ) : (
@@ -99,7 +112,31 @@ export default function Event({auth, event }){
                         )
                     }
                 </div>
+                <Modal show={confirmingEventDeletion} onClose={closeModal}>
+                    <div className=" text-white p-9">
+                        <p className="text-3xl text-center ">
+                            Are you sure you want to delete this Event?
+                        </p>
+                        <div className="flex justify-center gap-5 mt-5 text-xl">
+                            <button className="p-3 bg-blue-700 rounded"
+                                onClick={closeModal}
+                            >
+                                Cancel
+                            </button>
+                            <Link
+                                className="p-3 bg-red-500 rounded"
+                                href={route("deleteEvent", event)}
+                            >
+                                Confirm
+                            </Link>
+                        </div>
+                    </div>
 
+                </Modal>
             </GeneralLayout>
+
+
+
+            </>
     )
 }

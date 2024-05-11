@@ -7,19 +7,19 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { useEffect } from "react";
 
 
-export default function CreateEvent({auth ,climbing_level, locations}){
+export default function UpdateEvent({auth ,event, climbing_level, locations}){
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
-        start_date: '',
-        end_date: '',
-        type: '',
-        finished: false,
-        location: '',
-        climbing_level: '',
-        user_id: '',
+        name: event.name,
+        start_date: event.start_date,
+        end_date: event.end_date,
+        type: event.type,
+        location: event.location.id,
+        climbing_level: event.climbing_level.id,
     });
+
 
     const type = [
         { id: 1, name: 'Climbing Gym' },
@@ -30,12 +30,12 @@ export default function CreateEvent({auth ,climbing_level, locations}){
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('createEvent'));
+        post(route('updateEvent', event));
     };
 
     return (
         <GeneralLayout>
-            <Head title="Create Event"/>
+            <Head title="Update Event"/>
             <Header
                 auth={auth.user}
             />
@@ -104,9 +104,10 @@ export default function CreateEvent({auth ,climbing_level, locations}){
                             className='mt-1 block w-full'
                             onChange={(e) => setData('location', e.target.value)}
                         >
-                            <option value="default">Locations</option>
                             {locations.map((item) => (
-                                <option key={item.id} value={item.id}> {item.name} </option>
+                                <option key={item.id} value={item.id} selected={event.location.name === item.name}>
+                                    {item.name}
+                                </option>
                             ))}
                         </SelectInput>
 
@@ -123,9 +124,10 @@ export default function CreateEvent({auth ,climbing_level, locations}){
                             className='mt-1 block w-full'
                             onChange={(e) => setData('climbing_level', e.target.value)}
                         >
-                            <option value="default">Climbing Level</option>
                             {climbing_level.map((item) => (
-                                <option key={item.id} value={item.id}> {item.grade} </option>
+                                <option key={item.id} value={item.id} selected={event.climbing_level.grade === item.grade}>
+                                    {item.grade}
+                                </option>
                             ))}
                         </SelectInput>
 
@@ -142,9 +144,10 @@ export default function CreateEvent({auth ,climbing_level, locations}){
                             className='mt-1 block w-full'
                             onChange={(e) => setData('type', e.target.value)}
                         >
-                            <option value="default">Type</option>
                             {type.map((item) => (
-                                <option key={item.id} value={item.name}> {item.name} </option>
+                                <option key={item.id} value={item.name} selected={event.type === item.name}>
+                                    {item.name}
+                                </option>
                             ))}
                         </SelectInput>
 
@@ -157,7 +160,7 @@ export default function CreateEvent({auth ,climbing_level, locations}){
                             disabled={processing}
                             type="submit"
                         >
-                            Create event
+                            Update event
                         </PrimaryButton>
                     </div>
 

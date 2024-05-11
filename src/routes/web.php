@@ -25,6 +25,7 @@ use Inertia\Inertia;
 // });
 
 Route::get('/', [HomePageController::class, 'index'])->name('HomePage');
+
 Route::get('event/{id}', [EventController::class, 'index'])->name('event');
 
 Route::get('/inprogress', function() {
@@ -45,7 +46,17 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
+    //Create event
     Route::get('createEvent', [EventController::class, 'create'])->name('createEvent');
+    Route::post('createEvent', [EventController::class, 'store']);
+
+    //Update event
+    Route::get('updateEvent/{event}', [EventController::class, 'edit'])->name('updateEvent');
+    Route::post('updateEvent/{event}', [EventController::class, 'update']);
+
+    //Delete event
+    Route::get('deleteEvent/{event}', [EventController::class, 'destroy'])->name('deleteEvent');
+
 });
 
 require __DIR__.'/auth.php';

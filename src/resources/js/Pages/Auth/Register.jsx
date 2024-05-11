@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import GuestLayout from '@/Layouts/GuestLayout';
+import FormLayout from '@/Layouts/FormLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -34,7 +34,7 @@ export default function Register({climbing_level}) {
             <Header
                 register = {true}
             />
-        <GuestLayout>
+        <FormLayout>
             <Head title="Register" />
 
             <form onSubmit={submit}>
@@ -110,19 +110,22 @@ export default function Register({climbing_level}) {
                 </div>
 
                 <div className='mt-4'>
-                    <InputLabel htmlFor="climbing_level" value="Climbing level" />
+                        <InputLabel htmlFor="climbing_level" value="Climbing level" />
 
-                    <SelectInput
-                        id="climbing_level"
-                        name="climbing_level"
-                        optionsArray={climbing_level}
-                        className='mt-1 block w-full'
-                        onChange={(e) => setData('climbing_level', e.target.value)}
-                    />
+                        <SelectInput
+                            id="climbing_level"
+                            name="climbing_level"
+                            className='mt-1 block w-full'
+                            onChange={(e) => setData('climbing_level', e.target.value)}
+                        >
+                            <option value="default">Climbing Level</option>
+                            {climbing_level.map((item) => (
+                                <option key={item.id} value={item.id}> {item.grade} </option>
+                            ))}
+                        </SelectInput>
 
-                    <InputError message={errors.climbing_level} className="mt-2" />
-
-                </div>
+                        <InputError message={errors.climbing_level} className="mt-2" />
+                    </div>
 
                 <div className="flex items-center justify-end mt-4">
                     <Link
@@ -141,7 +144,7 @@ export default function Register({climbing_level}) {
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+        </FormLayout>
         </GeneralLayout>
     );
 }

@@ -44,7 +44,12 @@ export default {
                         borderRadius : "20px",
                         border: "1px solid white"
                     }
-                }
+                },
+                ".calendar-color-white" : {
+                    "&::-webkit-calendar-picker-indicator": {
+                        filter: "invert(1)",
+                    }
+                },
             }
 
             addUtilities(newUtilities, ["responsive", "hover"]);

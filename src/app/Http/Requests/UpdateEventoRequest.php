@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateEventoRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateEventoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,13 @@ class UpdateEventoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:55',
+            'start_date' => ['required', 'date', 'after:today'],
+            'end_date' => ['required','date','after:start_date'],
+            'type' => ['required', Rule::in(['Climbing Gym', 'Via Ferrata', 'Rock Climbing'])],
+            'location' => 'required|integer',
+            'climbing_level' => 'required|integer',
         ];
+
     }
 }
