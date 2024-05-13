@@ -20,9 +20,11 @@ class EventController extends Controller
      */
     public function index(int $id)
     {
-        $event = Event::with(['Location', 'Climbing_level', 'Participants.Climbing_level', 'User'])->findOrFail($id);
+        $eventData = Event::with(['Location', 'Climbing_level', 'Participants.Climbing_level', 'User'])->findOrFail($id);
+
+
         return Inertia::render('Events/Event', [
-            'event' => $event,
+            'event' => $eventData,
         ]);
     }
 
@@ -136,5 +138,27 @@ class EventController extends Controller
         $userEvent->delete();
 
         return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    public function joinEvent(Event $event){
+
+        if ($event->Participants()->where('user_id', Auth::id())->exists()) {
+            return $this->index($event->id);
+        }
+
+        $event->Participants()->attach(Auth::id());
+
+        return $this->index($event->id);
+    }
+
+    public function leaveEvent(Event $event){
+
+        if (!$event->Participants()->where('user_id', Auth::id())->exists()) {
+            return $this->index($event->id);
+        }
+        
+        $event->Participants()->detach(Auth::id());
+
+        return $this->index($event->id);
     }
 }

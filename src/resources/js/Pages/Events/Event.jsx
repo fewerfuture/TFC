@@ -4,32 +4,36 @@ import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 import Modal from '@/Components/Modal';
 
-export default function Event({auth, event }){
+export default function Event({auth, event}){
 
     const [confirmingEventDeletion, setConfirmingEventDeletion] = useState(false);
+    const [confirmingLeaveEvent, setConfirmingLeaveEvent] = useState(false);
 
     const confirmEventDeletion = () => {
         setConfirmingEventDeletion(true);
     };
 
-    const closeModal = () => {
+    const confirmLeaveEvent = () => {
+        setConfirmingLeaveEvent(true);
+    }
+
+    const closeModalDeleteEvent = () => {
         setConfirmingEventDeletion(false);
     }
 
-    let [startDate, startHour] = event.start_date.split(' ')
-    let [startHourSplit, startsMinuteSplit] = startHour.split(':')
-    let startHourNoSeconds = `${startHourSplit}:${startsMinuteSplit}`
+    const closeModalLeaveEvent = () => {
+        setConfirmingLeaveEvent(false);
 
+    }
+
+    let [startDate, startHour] = event.start_date.split(' ')
     let [endDate, endHour] = event.end_date.split(' ')
-    let [endHourSplit, endsMinuteSplit] = endHour.split(':')
-    let endHourNoSeconds = `${endHourSplit}:${endsMinuteSplit}`
 
     return (
             <>
             <GeneralLayout>
                 <Head title={"Event - " + event.user.name} />
                 <Header
-                    events = {true}
                     auth={auth.user}
                 />
 
@@ -40,14 +44,14 @@ export default function Event({auth, event }){
                         <p className="text-4xl self-center"> {event.climbing_level.grade} </p>
                         <p className="text-4xl self-end text-center">
                             {startDate}<br/>
-                            {startHourNoSeconds}
+                            {startHour}
                         </p>
                         <p className="text-4xl self-end text-center">
                             {endDate}<br/>
-                            {endHourNoSeconds}
+                            {endHour}
                         </p>
                     </div>
-                    <div className=" w-full">
+                    <div className="w-full">
                         <div className="h-80 m-4 rounded-lg bg-slate-700">
                             <p className="m-auto w-24 h-24 text-center">Iframe del mapa</p>
                         </div>
@@ -59,7 +63,7 @@ export default function Event({auth, event }){
                     <p className="text-6xl mt-20">
                         Participants:
                     </p>
-                <div className=" w-auto max-h-80 scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white overflow-y-auto">
+                <div className=" w-auto max-h-96 scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white overflow-y-auto">
                     {event.participants.map(participant => (
                         <div key={participant.id} className="mt-4 p-3 text-4xl border-b-2 b-gray-200 flex justify-between">
                             <p>
@@ -94,13 +98,22 @@ export default function Event({auth, event }){
                                 </div>
                             </>
                             ) : (
-                                <Link
-                                    className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
-                                    href={route('inprogress')}
-                                >
-                                    Join
-                                </Link>
 
+                                event.participants.some(participant => participant.id === auth.user.id) ? (
+                                        <button
+                                            className="bg-red-500 text-white py-2 px-4 rounded mr-2"
+                                            onClick={confirmLeaveEvent}
+                                        >
+                                            Leave
+                                        </button>
+                                    ) : (
+                                        <Link
+                                            className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
+                                            href={route('joinEvent', event)}
+                                        >
+                                            Join
+                                        </Link>
+                                    )
                             )
                         ) : (
                             <Link
@@ -112,14 +125,14 @@ export default function Event({auth, event }){
                         )
                     }
                 </div>
-                <Modal show={confirmingEventDeletion} onClose={closeModal}>
+                <Modal show={confirmingEventDeletion} onClose={closeModalDeleteEvent}>
                     <div className=" text-white p-9">
                         <p className="text-3xl text-center ">
                             Are you sure you want to delete this Event?
                         </p>
                         <div className="flex justify-center gap-5 mt-5 text-xl">
                             <button className="p-3 bg-blue-700 rounded"
-                                onClick={closeModal}
+                                onClick={closeModalDeleteEvent}
                             >
                                 Cancel
                             </button>
@@ -132,6 +145,27 @@ export default function Event({auth, event }){
                         </div>
                     </div>
 
+                </Modal>
+
+                <Modal show={confirmingLeaveEvent} onClose={closeModalLeaveEvent}>
+                    <div className=" text-white p-9">
+                        <p className="text-3xl text-center ">
+                            Are you sure you want to leave this Event?
+                        </p>
+                        <div className="flex justify-center gap-5 mt-5 text-xl">
+                            <button className="p-3 bg-blue-700 rounded"
+                                onClick={closeModalLeaveEvent}
+                            >
+                                Cancel
+                            </button>
+                            <Link
+                                className="p-3 bg-red-500 rounded"
+                                href={route("leaveEvent", event)}
+                            >
+                                Confirm
+                            </Link>
+                        </div>
+                    </div>
                 </Modal>
             </GeneralLayout>
 

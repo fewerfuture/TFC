@@ -5,9 +5,7 @@ import { Head, Link } from "@inertiajs/react";
 
 
 
-export default function HomePage({auth, eventData}) {
-
-
+export default function HomePage({auth, eventData, joinedEvents}) {
     return (
         <>
             <GeneralLayout>
@@ -54,8 +52,6 @@ export default function HomePage({auth, eventData}) {
                                     <p>:(</p>
                                 </div>
                             </>
-
-
                         )}
 
                     </main>

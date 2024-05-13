@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 
 class Event extends Model
@@ -24,6 +25,20 @@ class Event extends Model
         'user_id',
     ];
 
+    #region Accessors
+    // Accessor para start_date
+    public function getStartDateAttribute($value)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d-m-Y H:i');
+    }
+
+    // Accessor para end_date
+    public function getEndDateAttribute($value)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d-m-Y H:i');
+    }
+    #endregion
+
     #region relaciones
     public function Climbing_level() : BelongsTo {
         return $this->belongsTo(Climbing_level::class);
@@ -33,7 +48,6 @@ class Event extends Model
         return $this->belongsTo(Location::class);
     }
 
-    //Event model
     public function User() : BelongsTo {
         return $this->belongsTo(User::class);
     }

@@ -44,7 +44,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    //Log Out
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     //Create event
     Route::get('createEvent', [EventController::class, 'create'])->name('createEvent');
@@ -56,6 +57,10 @@ Route::middleware('auth')->group(function () {
 
     //Delete event
     Route::get('deleteEvent/{event}', [EventController::class, 'destroy'])->name('deleteEvent');
+
+    //Join and leave event
+    Route::get('joinEvent/{event}', [EventController::class, 'joinEvent'])->name('joinEvent');
+    Route::get('leaveEvent/{event}', [EventController::class, 'leaveEvent'])->name('leaveEvent');
 
 });
 
