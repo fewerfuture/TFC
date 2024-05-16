@@ -22,7 +22,6 @@ class EventController extends Controller
     {
         $eventData = Event::with(['Location', 'Climbing_level', 'Participants.Climbing_level', 'User'])->findOrFail($id);
 
-
         return Inertia::render('Events/Event', [
             'event' => $eventData,
         ]);
@@ -82,12 +81,17 @@ class EventController extends Controller
     {
         $completeEvent = Event::with(['Location', 'Climbing_level', 'User'])->findOrFail($event->id);
 
+        $startDateOriginal = $completeEvent->getRawOriginal('start_date');
+        $endDateOriginal = $completeEvent->getRawOriginal('end_date');
+
         if(Auth::id() != $completeEvent->user->id){
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
         return Inertia::render('Events/UpdateEvent', [
             'event' => $completeEvent,
+            'start_date_original' => $startDateOriginal,
+            'end_date_original' => $endDateOriginal,
             'climbing_level' => Climbing_level::get(),
             'locations' => Location::get(),
         ]);
@@ -156,7 +160,7 @@ class EventController extends Controller
         if (!$event->Participants()->where('user_id', Auth::id())->exists()) {
             return $this->index($event->id);
         }
-        
+
         $event->Participants()->detach(Auth::id());
 
         return $this->index($event->id);

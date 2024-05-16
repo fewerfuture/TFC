@@ -1,11 +1,67 @@
 import CardEvent from "@/Components/CardEvent";
+import Checkbox from "@/Components/Checkbox";
 import Header from "@/Components/Header";
+import InputLabel from "@/Components/InputLabel";
+import SelectInput from "@/Components/SelectInput";
+import TextInput from '@/Components/TextInput';
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { format } from 'date-fns';
 
 
+export default function HomePage({auth, eventData, joinedUserEvents, climbing_level}) {
 
-export default function HomePage({auth, eventData, joinedEvents}) {
+    // variables
+    let inputValueDate;
+    const type = [
+        { id: 1, name: 'Climbing Gym' },
+        { id: 2, name: 'Via Ferrata' },
+        { id: 3, name: 'Rock Climbing' }
+    ];
+
+    // Filters
+    const [nameSearch, setNameSearch] = useState('');
+    const [levelSearch, setLevelSearch] = useState("0");
+    const [finishedSearch, setFinishedSearch] = useState(false);
+    const [dateSearch, setDateSearch] = useState('');
+    const [typeSearch, setTypeSearch] = useState('');
+
+    // Filters functions
+    const updateNameSearch = e => {
+      setNameSearch(e.target.value);
+    };
+
+    const updateLevelSearch = e => {
+      setLevelSearch(e.target.value);
+    };
+
+    const updateFinishedSearch = () => {
+        setFinishedSearch(!finishedSearch)
+    }
+
+    const updateDataSearch = e => {
+        inputValueDate = e.target.value
+        e.target.value ? setDateSearch(format(new Date(e.target.value), 'dd-MM-yyyy')) : setDateSearch('')
+    }
+
+    const updateTypeSearch = e => {
+        setTypeSearch(e.target.value)
+    }
+
+    // Data filter
+    const filteredEvents = eventData.filter(event =>
+        event.name.toLowerCase().includes(nameSearch.toLowerCase()) &&
+        (levelSearch == "0" || event.climbing_level_id.toString() === levelSearch) &&
+        event.finished == finishedSearch &&
+        event.start_date.includes(dateSearch) &&
+        (typeSearch == "" || typeSearch == event.type)
+    );
+
+    useEffect(() => {
+        console.log(typeSearch);
+    }, [])
+
     return (
         <>
             <GeneralLayout>
@@ -14,9 +70,9 @@ export default function HomePage({auth, eventData, joinedEvents}) {
                     homePage = {true}
                     auth={auth.user}
                 />
-                <div className=" mt-7 grid lg:grid-cols-[200px_minmax(400px,1fr)_300px] lg:grid-rows-2 grid-cols-1 grid-rows-4 h-screen">
+                <div className="mt-7 grid lg:grid-cols-[200px_minmax(400px,1fr)_300px] lg:grid-rows-2 grid-cols-1 grid-rows-4 h-screen">
 
-                    <aside className="lg:row-span-2 flex flex-col items-center">
+                    <aside className="lg:row-span-2 flex flex-col items-center w-full">
 
                         {auth.user ?
                             (
@@ -31,20 +87,98 @@ export default function HomePage({auth, eventData, joinedEvents}) {
                             )
                         }
 
+                        <div className="mt-6">
+                            <InputLabel htmlFor="nameEvent" value="Name Filter"/>
+
+                            <TextInput
+                                id="nameEvent"
+                                type="text"
+                                name="nameEvent"
+                                value={nameSearch}
+                                className="mt-1 block w-full"
+                                onChange={updateNameSearch}
+                            />
+                        </div>
+
+                        <div className="mt-6">
+                        <InputLabel htmlFor="start_date" value="Start Date" />
+
+                        <TextInput
+                            id="start_date"
+                            type="date"
+                            name="start_date"
+                            value={inputValueDate}
+                            className="mt-1 block dark:calendar-color-white"
+                            onChange={updateDataSearch}
+                        />
+                    </div>
+
+                    <div className='mt-6'>
+                        <InputLabel htmlFor="type" value="Type of Event" />
+
+                        <SelectInput
+                            id="type"
+                            name="type"
+                            value={typeSearch}
+                            className='mt-1 block w-full'
+                            onChange={updateTypeSearch}
+                        >
+                            <option value="">No filter</option>
+                            {type.map((item) => (
+                                <option key={item.id} value={item.name}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </SelectInput>
+                    </div>
+
+                    <div className="mt-6">
+                        <InputLabel htmlFor="levelEvent" value="Climbing Level Filter"/>
+
+                        <SelectInput
+                            id="levelEvent"
+                            name="levelEvent"
+                            value={levelSearch}
+                            className="mt-1 block w-full"
+                            onChange={updateLevelSearch}
+                        >
+                            <option value="0">No filter</option>
+                            {climbing_level.map((level) => (
+                                <option key={level.id} value={level.id}>{level.grade}</option>
+                            ))}
+                        </SelectInput>
+                    </div>
+
+                    <div className="mt-6">
+                            <Checkbox
+                                id="finishedEvents"
+                                name="finishedEvents"
+                                value={finishedSearch}
+                                className=""
+                                onChange={updateFinishedSearch}
+                            />
+                            <span className="ml-2">Show finished events</span>
+                        </div>
+
                     </aside>
 
                     <main className="lg:row-span-2 overflow-y-scroll scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white">
 
                         {eventData.length > 0 ? (
-                            eventData.map(event => (
-                                <Link
-                                    key={event.id}
-                                    href={route('event', event.id)}
-                                >
-                                    <CardEvent event={event} user={event.user} />
-                                </Link>
+                            filteredEvents.length > 0 ? (
+                                filteredEvents.map(event => (
+                                    <Link
+                                        key={event.id}
+                                        href={route('event', event.id)}
+                                    >
+                                        <CardEvent event={event} user={event.user} />
+                                    </Link>
 
-                            ))
+                                ))
+                            ) : (
+                                <p className="text-center m-16 text-2xl font-bold">No events found.</p>
+                            )
+
                         ) : (
                             <>
                                 <div className="text-center m-16 text-2xl font-bold">
@@ -56,9 +190,40 @@ export default function HomePage({auth, eventData, joinedEvents}) {
 
                     </main>
 
-                    <aside className=""> right - aside - top</aside>
+                    <aside className="flex flex-col px-5 ">
+                        <p className="text-3xl self-center">Joined Events</p>
+                        <div className="max-h-full overflow-auto scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white flex flex-col">
+
+                            {auth.user && auth.user.id ? (
+                                joinedUserEvents.length > 0 ? (
+                                    joinedUserEvents.map((event) =>(
+                                        <Link
+                                            className="mr-5 border-b-2 flex justify-between items-center mt-3 "
+                                            href={route('event', event.id)}
+                                            key={event.id}
+                                        >
+                                            <p className="text-lg max-w-32 truncate"> {event.name} </p>
+                                            <p> {event.start_date.split(' ')[0]} </p>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <p className="self-center mt-5 underline underline-offset-4 decoration-dotted" >You are not joined at any events</p>
+                                )
+                            ) : (
+                                <Link
+                                    className="self-center mt-5 underline underline-offset-4 text-gray-500"
+                                    href={route('login')}
+                                >
+                                    Log in to join an event
+                                </Link>
+                            )
+                            }
+
+                        </div>
+                    </aside>
 
                     <aside className=""> right - aside - bottom</aside>
+
                 </div>
             </GeneralLayout>
         </>

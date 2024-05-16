@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Climbing_level;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,20 +17,21 @@ class HomePageController extends Controller
      */
     public function index()
     {
-        Event::where('end_date', '<=', now())->update([
-            'finished' => true,
-        ]);
-
-        $eventsData = Event::where('finished', false)
-        ->with(['Climbing_level', 'Location', 'User'])
+        $eventsData = Event::with(['Climbing_level', 'Location', 'User'])
         ->orderBy('created_at', 'DESC')
         ->get();
 
-        $joinedEvents = User::where('id', '=', Auth::id())->with('ParticipatingEvents')->get();
+        $joinedUserEvents = Event::whereHas('Participants', function($query) {
+            $query->where('user_id', '=', Auth::id());
+        })
+        ->where('user_id', '!=', Auth::id())
+        ->orderBy('start_date', 'DESC')
+        ->get();
 
         return Inertia::render('HomePage', [
             'eventData' => $eventsData,
-            'joinedEvents' => $joinedEvents
+            'joinedUserEvents' => $joinedUserEvents,
+            'climbing_level' => Climbing_level::get(),
         ]);
     }
 

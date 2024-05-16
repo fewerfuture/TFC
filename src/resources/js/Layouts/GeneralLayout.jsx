@@ -5,7 +5,10 @@ export default function GeneralLayout({children}){
 
                     {children}
 
-                    <footer className="h-52 w-auto border-t-2 mt-16">footer</footer>
+                    <footer className="min-h-14 w-auto border-t-2 mt-16 flex flex-row justify-between items-center">
+                        <p>Created by: Álvaro Sánchez - <a href="https://portal.edu.gva.es/iesmutxamel/" className="underline">Ies Mutxamel</a></p>
+                        <a href="https://github.com/fewerfuture/TFC" className="underline">Github repo</a>
+                    </footer>
                 </div>
             </div>
     )

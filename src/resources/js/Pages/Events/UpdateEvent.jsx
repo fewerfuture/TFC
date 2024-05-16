@@ -10,11 +10,11 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { useEffect } from "react";
 
 
-export default function UpdateEvent({auth ,event, climbing_level, locations}){
+export default function UpdateEvent({auth ,event, climbing_level, locations, start_date_original, end_date_original}){
     const { data, setData, post, processing, errors } = useForm({
         name: event.name,
-        start_date: event.start_date,
-        end_date: event.end_date,
+        start_date: start_date_original,
+        end_date: end_date_original,
         type: event.type,
         location: event.location.id,
         climbing_level: event.climbing_level.id,
