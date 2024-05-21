@@ -33,9 +33,7 @@ export default function Event({auth, event}){
             <>
             <GeneralLayout>
                 <Head title={"Event - " + event.user.name} />
-                <Header
-                    auth={auth.user}
-                />
+                <Header/>
 
                 <div className="flex flex-1 flex-row">
                     <div className=" w-full h-96 grid grid-row-2 grid-cols-2 *:bg-gray-300 dark:*:bg-slate-700 *:rounded *:w-fit *:p-3">

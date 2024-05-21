@@ -36,9 +36,7 @@ export default function CreateEvent({auth ,climbing_level, locations}){
     return (
         <GeneralLayout>
             <Head title="Create Event"/>
-            <Header
-                auth={auth.user}
-            />
+            <Header/>
             <FormLayout>
 
                 <form onSubmit={submit} >

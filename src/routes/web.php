@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +64,12 @@ Route::middleware('auth')->group(function () {
     //Join and leave event
     Route::get('joinEvent/{event}', [EventController::class, 'joinEvent'])->name('joinEvent');
     Route::get('leaveEvent/{event}', [EventController::class, 'leaveEvent'])->name('leaveEvent');
+
+    //profile
+    Route::get('profile', [ProfileController::class, 'edit'])->name('editProfile');
+    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
 });
 

@@ -1,9 +1,13 @@
-import { Link } from "@inertiajs/react"
+import { Link, usePage } from "@inertiajs/react"
 import ApplicationLogo from "./ApplicationLogo"
 import NavLink from "./NavLink"
 import Dropdown from "./Dropdown"
+import { useEffect } from "react";
 
-export default function Header({homePage = false, events = false, aboutUs = false, logIn = false, register = false, user = false, auth}){
+export default function Header({homePage = false, events = false, aboutUs = false, logIn = false, register = false}){
+
+    const user = usePage().props.auth.user;
+
     return (
         <header className="p-4 m-auto col-span-3 border-b-2">
             <nav className="w-full h-full m-auto flex flex-row justify-between">
@@ -44,7 +48,7 @@ export default function Header({homePage = false, events = false, aboutUs = fals
 
                 <ul className="flex flex-row gap-16 *:self-center">
 
-                    {auth ? (
+                    {user ? (
                         <>
                             <div className="hidden sm:flex sm:items-center sm:ms-6">
                                 <div className="ms-3 relative">
@@ -55,7 +59,7 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                                                     type="button"
                                                     className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                                 >
-                                                    {auth.name}
+                                                    {user.name}
 
                                                     <svg
                                                         className="ms-2 -me-0.5 h-4 w-4"
@@ -74,7 +78,7 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                                         </Dropdown.Trigger>
 
                                         <Dropdown.Content>
-                                            <Dropdown.Link href={route('inprogress')}>Profile</Dropdown.Link>
+                                            <Dropdown.Link href={route('editProfile')}>Profile</Dropdown.Link>
                                             <Dropdown.Link href={route('logout')} method="post" as="button">
                                                 Log Out
                                             </Dropdown.Link>

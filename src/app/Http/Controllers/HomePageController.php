@@ -17,6 +17,10 @@ class HomePageController extends Controller
      */
     public function index()
     {
+        Event::where('end_date', '<=', now())->update([
+            'finished' => true,
+        ]);
+
         $eventsData = Event::with(['Climbing_level', 'Location', 'User'])
         ->orderBy('created_at', 'DESC')
         ->get();

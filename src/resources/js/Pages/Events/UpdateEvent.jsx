@@ -36,9 +36,7 @@ export default function UpdateEvent({auth ,event, climbing_level, locations, sta
     return (
         <GeneralLayout>
             <Head title="Update Event"/>
-            <Header
-                auth={auth.user}
-            />
+            <Header/>
             <FormLayout>
 
                 <form onSubmit={submit} >

@@ -1,6 +1,7 @@
 export default function CardEvent ({event, user}) {
 
-    let [date] = event.start_date.split(' ')
+    let [start_date] = event.start_date.split(' ')
+    let [end_date] = event.end_date.split(' ')
 
 
     return (
@@ -11,7 +12,7 @@ export default function CardEvent ({event, user}) {
             </div>
             <div className="text-xl text-center *:mb-2 flex justify-around w-full">
                 <p> {event.climbing_level.grade} </p>
-                <p> {date} </p>
+                <p> {start_date} / {end_date} </p>
                 <p> {event.type} </p>
                 <p> {user.name} </p>
             </div>

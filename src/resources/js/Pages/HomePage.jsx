@@ -13,7 +13,8 @@ import { format } from 'date-fns';
 export default function HomePage({auth, eventData, joinedUserEvents, climbing_level}) {
 
     // variables
-    let inputValueDate;
+    let inputValueSartDate;
+    let inputValueEndDate;
     const type = [
         { id: 1, name: 'Climbing Gym' },
         { id: 2, name: 'Via Ferrata' },
@@ -24,8 +25,13 @@ export default function HomePage({auth, eventData, joinedUserEvents, climbing_le
     const [nameSearch, setNameSearch] = useState('');
     const [levelSearch, setLevelSearch] = useState("0");
     const [finishedSearch, setFinishedSearch] = useState(false);
-    const [dateSearch, setDateSearch] = useState('');
+    const [startDateSearch, setStartDateSearch] = useState('');
+    const [endDateSearch, setEndDateSearch] = useState('');
     const [typeSearch, setTypeSearch] = useState('');
+
+    const formatDate = (date) =>(
+        format(new Date(date), 'dd-MM-yyyy')
+    )
 
     // Filters functions
     const updateNameSearch = e => {
@@ -40,27 +46,29 @@ export default function HomePage({auth, eventData, joinedUserEvents, climbing_le
         setFinishedSearch(!finishedSearch)
     }
 
-    const updateDataSearch = e => {
-        inputValueDate = e.target.value
-        e.target.value ? setDateSearch(format(new Date(e.target.value), 'dd-MM-yyyy')) : setDateSearch('')
+    const updateStartDataSearch = e => {
+        inputValueSartDate = e.target.value
+        e.target.value ? setStartDateSearch(formatDate(e.target.value)) : setStartDateSearch('')
+    }
+
+    const updateEndDataSearch = e => {
+        inputValueEndDate = e.target.value
+        e.target.value ? setEndDateSearch(formatDate(e.target.value)) : setEndDateSearch('')
     }
 
     const updateTypeSearch = e => {
         setTypeSearch(e.target.value)
     }
 
-    // Data filter
+    // Data filtered
     const filteredEvents = eventData.filter(event =>
         event.name.toLowerCase().includes(nameSearch.toLowerCase()) &&
-        (levelSearch == "0" || event.climbing_level_id.toString() === levelSearch) &&
+        (levelSearch == "0" || event.climbing_level_id.toString() == levelSearch) &&
         event.finished == finishedSearch &&
-        event.start_date.includes(dateSearch) &&
+        event.start_date.includes(startDateSearch) &&
+        event.end_date.includes(endDateSearch) &&
         (typeSearch == "" || typeSearch == event.type)
     );
-
-    useEffect(() => {
-        console.log(typeSearch);
-    }, [])
 
     return (
         <>
@@ -68,7 +76,6 @@ export default function HomePage({auth, eventData, joinedUserEvents, climbing_le
                 <Head title="Home page" />
                 <Header
                     homePage = {true}
-                    auth={auth.user}
                 />
                 <div className="mt-7 grid lg:grid-cols-[200px_minmax(400px,1fr)_300px] lg:grid-rows-2 grid-cols-1 grid-rows-4 h-screen">
 
@@ -88,12 +95,11 @@ export default function HomePage({auth, eventData, joinedUserEvents, climbing_le
                         }
 
                         <div className="mt-6">
-                            <InputLabel htmlFor="nameEvent" value="Name Filter"/>
-
                             <TextInput
                                 id="nameEvent"
                                 type="text"
                                 name="nameEvent"
+                                placeholder="Event Name"
                                 value={nameSearch}
                                 className="mt-1 block w-full"
                                 onChange={updateNameSearch}
@@ -101,55 +107,68 @@ export default function HomePage({auth, eventData, joinedUserEvents, climbing_le
                         </div>
 
                         <div className="mt-6">
-                        <InputLabel htmlFor="start_date" value="Start Date" />
+                            <InputLabel htmlFor="start_date" value="Start Date" />
 
-                        <TextInput
-                            id="start_date"
-                            type="date"
-                            name="start_date"
-                            value={inputValueDate}
-                            className="mt-1 block dark:calendar-color-white"
-                            onChange={updateDataSearch}
-                        />
-                    </div>
+                            <TextInput
+                                id="start_date"
+                                type="date"
+                                name="start_date"
+                                value={inputValueSartDate}
+                                className="mt-1 block dark:calendar-color-white"
+                                onChange={updateStartDataSearch}
+                            />
+                        </div>
 
-                    <div className='mt-6'>
-                        <InputLabel htmlFor="type" value="Type of Event" />
+                        <div className="mt-6">
+                            <InputLabel htmlFor="end_date" value="End Date" />
 
-                        <SelectInput
-                            id="type"
-                            name="type"
-                            value={typeSearch}
-                            className='mt-1 block w-full'
-                            onChange={updateTypeSearch}
-                        >
-                            <option value="">No filter</option>
-                            {type.map((item) => (
-                                <option key={item.id} value={item.name}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </SelectInput>
-                    </div>
+                            <TextInput
+                                id="end_date"
+                                type="date"
+                                name="end_date"
+                                value={inputValueEndDate}
+                                className="mt-1 block dark:calendar-color-white"
+                                onChange={updateEndDataSearch}
+                            />
+                        </div>
 
-                    <div className="mt-6">
-                        <InputLabel htmlFor="levelEvent" value="Climbing Level Filter"/>
+                        <div className='mt-6'>
+                            <InputLabel htmlFor="type" value="Type of Event" />
 
-                        <SelectInput
-                            id="levelEvent"
-                            name="levelEvent"
-                            value={levelSearch}
-                            className="mt-1 block w-full"
-                            onChange={updateLevelSearch}
-                        >
-                            <option value="0">No filter</option>
-                            {climbing_level.map((level) => (
-                                <option key={level.id} value={level.id}>{level.grade}</option>
-                            ))}
-                        </SelectInput>
-                    </div>
+                            <SelectInput
+                                id="type"
+                                name="type"
+                                value={typeSearch}
+                                className='mt-1 block w-full'
+                                onChange={updateTypeSearch}
+                            >
+                                <option value="">No filter</option>
+                                {type.map((item) => (
+                                    <option key={item.id} value={item.name}>
+                                        {item.name}
+                                    </option>
+                                ))}
+                            </SelectInput>
+                        </div>
 
-                    <div className="mt-6">
+                        <div className="mt-6">
+                            <InputLabel htmlFor="levelEvent" value="Climbing Level Filter"/>
+
+                            <SelectInput
+                                id="levelEvent"
+                                name="levelEvent"
+                                value={levelSearch}
+                                className="mt-1 block w-full"
+                                onChange={updateLevelSearch}
+                            >
+                                <option value="0">No filter</option>
+                                {climbing_level.map((level) => (
+                                    <option key={level.id} value={level.id}>{level.grade}</option>
+                                ))}
+                            </SelectInput>
+                        </div>
+
+                        <div className="mt-6">
                             <Checkbox
                                 id="finishedEvents"
                                 name="finishedEvents"
@@ -164,34 +183,34 @@ export default function HomePage({auth, eventData, joinedUserEvents, climbing_le
 
                     <main className="lg:row-span-2 overflow-y-scroll scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white">
 
-                        {eventData.length > 0 ? (
-                            filteredEvents.length > 0 ? (
-                                filteredEvents.map(event => (
-                                    <Link
-                                        key={event.id}
-                                        href={route('event', event.id)}
-                                    >
-                                        <CardEvent event={event} user={event.user} />
-                                    </Link>
+                            {eventData.length > 0 ? (
+                                filteredEvents.length > 0 ? (
+                                    filteredEvents.map(event => (
+                                        <Link
+                                            key={event.id}
+                                            href={route('event', event.id)}
+                                        >
+                                            <CardEvent event={event} user={event.user} />
+                                        </Link>
 
-                                ))
+                                    ))
+                                ) : (
+                                    <p className="text-center m-16 text-2xl font-bold">No events found.</p>
+                                )
+
                             ) : (
-                                <p className="text-center m-16 text-2xl font-bold">No events found.</p>
-                            )
-
-                        ) : (
-                            <>
-                                <div className="text-center m-16 text-2xl font-bold">
-                                    <p>There are no events available at this time.</p>
-                                    <p>:(</p>
-                                </div>
-                            </>
-                        )}
+                                <>
+                                    <div className="text-center m-16 text-2xl font-bold">
+                                        <p>There are no events available at this time.</p>
+                                        <p>:(</p>
+                                    </div>
+                                </>
+                            )}
 
                     </main>
 
                     <aside className="flex flex-col px-5 ">
-                        <p className="text-3xl self-center">Joined Events</p>
+                        <p className="text-3xl self-center mr-5">Joined Events</p>
                         <div className="max-h-full overflow-auto scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white flex flex-col">
 
                             {auth.user && auth.user.id ? (

@@ -21,6 +21,10 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "date-fns": "^3.6.0"
+        "@iconify/react": "^4.1.1",
+        "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/inertia-react": "^0.8.1",
+        "date-fns": "^3.6.0",
+        "react-infinite-scroll-component": "^6.1.0"
     }
 }
