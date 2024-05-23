@@ -24,6 +24,8 @@ class EventController extends Controller
 
         return Inertia::render('Events/Event', [
             'event' => $eventData,
+            'apiKey' => env('GOOGLE_MAPS_API_KEY'),
+            'mapID' => env('GOOGLE_MAPS_ID_MAP')
         ]);
     }
 
@@ -152,7 +154,7 @@ class EventController extends Controller
 
         $event->Participants()->attach(Auth::id());
 
-        return $this->index($event->id);
+        return redirect()->intended(route('event', $event->id));
     }
 
     public function leaveEvent(Event $event){

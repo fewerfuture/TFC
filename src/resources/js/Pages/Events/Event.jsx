@@ -1,10 +1,11 @@
 import Header from "@/Components/Header";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from '@/Components/Modal';
+import Mapa from "@/Components/Mapa";
 
-export default function Event({auth, event}){
+export default function Event({auth, event, apiKey, mapID}){
 
     const [confirmingEventDeletion, setConfirmingEventDeletion] = useState(false);
     const [confirmingLeaveEvent, setConfirmingLeaveEvent] = useState(false);
@@ -50,9 +51,12 @@ export default function Event({auth, event}){
                         </p>
                     </div>
                     <div className="w-full">
-                        <div className="h-80 m-4 rounded-lg bg-slate-700">
-                            <p className="m-auto w-24 h-24 text-center">Iframe del mapa</p>
-                        </div>
+                        <Mapa
+                            eventLatitude={event.location.latitude}
+                            eventLongitude={event.location.longitude}
+                            envApiKey={apiKey}
+                            envMapID={mapID}
+                        />
                         <p className="text-2xl ml-4">
                             {event.location.name}
                         </p>
