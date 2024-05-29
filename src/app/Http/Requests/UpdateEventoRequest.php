@@ -27,7 +27,7 @@ class UpdateEventoRequest extends FormRequest
             'start_date' => ['required', 'date', 'after:today'],
             'end_date' => ['required','date','after:start_date'],
             'type' => ['required', Rule::in(['Climbing Gym', 'Via Ferrata', 'Rock Climbing'])],
-            'location' => 'required|integer',
+            'location' => 'required|string|max:55',
             'climbing_level' => 'required|integer',
         ];
 

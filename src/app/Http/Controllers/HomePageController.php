@@ -36,6 +36,8 @@ class HomePageController extends Controller
             'eventData' => $eventsData,
             'joinedUserEvents' => $joinedUserEvents,
             'climbing_level' => Climbing_level::get(),
+            'apiKey' => env('GOOGLE_MAPS_API_KEY'),
+            'mapID' => env('GOOGLE_MAPS_ID_MAP')
         ]);
     }
 

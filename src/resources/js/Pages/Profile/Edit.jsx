@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/react';
 import GeneralLayout from '@/Layouts/GeneralLayout';
 import Header from '@/Components/Header';
 
-export default function Edit() {
+export default function Edit({climbing_levels}) {
     return (
         <GeneralLayout>
             <Head title="Profile" />
@@ -17,6 +17,7 @@ export default function Edit() {
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <UpdateProfileInformationForm
                             className="max-w-xl"
+                            climbing_levels={climbing_levels}
                         />
                     </div>
 

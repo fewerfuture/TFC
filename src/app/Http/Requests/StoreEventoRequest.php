@@ -29,7 +29,9 @@ class StoreEventoRequest extends FormRequest
             'end_date' => ['required','date','after:start_date'],
             'type' => ['required', Rule::in(['Climbing Gym', 'Via Ferrata', 'Rock Climbing'])],
             'finished' => 'required|boolean',
-            'location' => 'required|integer',
+            'location' => 'required|string|max:55',
+            // 'coordinate.lat' => 'required|numeric|between:-90,90',
+            // 'coordinate.lng' => 'required|numeric|between:-180,180',
             'climbing_level' => 'required|integer',
         ];
     }

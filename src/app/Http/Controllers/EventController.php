@@ -9,8 +9,9 @@ use App\Models\Event;
 use App\Models\Location;
 use App\Providers\RouteServiceProvider;
 use DateTime;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -37,6 +38,8 @@ class EventController extends Controller
         return Inertia::render('Events/CreateEvent', [
             'climbing_level' => Climbing_level::get(),
             'locations' => Location::get(),
+            'apiKey' => env('GOOGLE_MAPS_API_KEY'),
+            'mapID' => env('GOOGLE_MAPS_ID_MAP')
         ]);
     }
 
@@ -52,13 +55,19 @@ class EventController extends Controller
         $startDateFormated = $newStartDate->format('Y-m-d H:i:s');
         $endDateFormated = $newEndDate->format('Y-m-d H:i:s');
 
+        $location = Location::create([
+            'name' => $request->location,
+            'latitude' => $request->input('coordinates.lat'),
+            'longitude' => $request->input('coordinates.lng'),
+        ]);
+
         $event = Event::create([
             'name' => $request->name,
             'start_date' => $startDateFormated,
             'end_date' => $endDateFormated ,
             'type' => $request->type,
             'finished' => $request->finished,
-            'location_id' => $request->location,
+            'location_id' => $location->id,
             'climbing_level_id' => $request->climbing_level,
             'user_id' => Auth::id(),
         ]);
@@ -95,7 +104,8 @@ class EventController extends Controller
             'start_date_original' => $startDateOriginal,
             'end_date_original' => $endDateOriginal,
             'climbing_level' => Climbing_level::get(),
-            'locations' => Location::get(),
+            'apiKey' => env('GOOGLE_MAPS_API_KEY'),
+            'mapID' => env('GOOGLE_MAPS_ID_MAP')
         ]);
     }
 
@@ -105,6 +115,8 @@ class EventController extends Controller
     public function update(UpdateEventoRequest $request, Event $event)
     {
         $userEvent = Event::with(['User'])->findOrFail($event->id);
+
+        $location = Location::findOrFail($event->location_id);
 
         if(Auth::id() != $userEvent->user->id){
             return redirect()->intended(RouteServiceProvider::HOME);
@@ -116,16 +128,25 @@ class EventController extends Controller
         $startDateFormated = $newStartDate->format('Y-m-d H:i:s');
         $endDateFormated = $newEndDate->format('Y-m-d H:i:s');
 
+        $location->update([
+            'name' => $request->location,
+            'latitude' => $request->input('coordinates.lat'),
+            'longitude' => $request->input('coordinates.lng'),
+        ]);
+
         $event->update([
             'name' => $request->name,
             'start_date' => $startDateFormated,
             'end_date' => $endDateFormated ,
             'type' => $request->type,
-            'location_id' => $request->location,
+            'location_id' => $location->id,
             'climbing_level_id' => $request->climbing_level,
         ]);
 
-        return $this->index($event->id);
+        $location->save();
+        $event->save();
+
+        return redirect()->intended(route('event', $event->id));
     }
 
     /**
@@ -165,6 +186,6 @@ class EventController extends Controller
 
         $event->Participants()->detach(Auth::id());
 
-        return $this->index($event->id);
+        return redirect()->intended(route('event', $event->id));
     }
 }

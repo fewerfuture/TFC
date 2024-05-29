@@ -13,6 +13,11 @@ class Location extends Model
 
     public $timestamps = false;
     protected $table = 'location';
+    protected $fillable = [
+        'name',
+        'latitude',
+        'longitude',
+    ];
 
     #region relaciones
     public function Events() : HasMany {

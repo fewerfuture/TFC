@@ -1,11 +1,16 @@
-import { Link, usePage } from "@inertiajs/react"
-import ApplicationLogo from "./ApplicationLogo"
-import NavLink from "./NavLink"
-import Dropdown from "./Dropdown"
+import { Link, usePage } from "@inertiajs/react";
+import ApplicationLogo from "./ApplicationLogo";
+import NavLink from "./NavLink";
+import Dropdown from "./Dropdown";
 import { useEffect } from "react";
 
-export default function Header({homePage = false, events = false, aboutUs = false, logIn = false, register = false}){
-
+export default function Header({
+    homePage = false,
+    events = false,
+    aboutUs = false,
+    logIn = false,
+    register = false,
+}) {
     const user = usePage().props.auth.user;
 
     return (
@@ -13,41 +18,28 @@ export default function Header({homePage = false, events = false, aboutUs = fals
             <nav className="w-full h-full m-auto flex flex-row justify-between">
                 <ul className="flex flex-row gap-16 *:self-center">
                     <li>
-                        <Link
-                            href={route('HomePage')}
-                        >
-                            <ApplicationLogo className="w-10 h-10 fill-current text-gray-500"/>
+                        <Link href={route("HomePage")}>
+                            <ApplicationLogo className="w-10 h-10 fill-current text-gray-500" />
                         </Link>
-
                     </li>
                     <li>
-                        <NavLink
-                            active = {homePage}
-                            href = {route('HomePage')}
-                        >
+                        <NavLink active={homePage} href={route("HomePage")}>
                             Home Page
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink
-                            active = {events}
-                            href={route('inprogress')}
-                        >
+                        <NavLink active={events} href={route("inprogress")}>
                             My Events
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink
-                            active = {aboutUs}
-                            href={route('inprogress')}
-                        >
+                        <NavLink active={aboutUs} href={route("inprogress")}>
                             About Us
                         </NavLink>
                     </li>
                 </ul>
 
                 <ul className="flex flex-row gap-16 *:self-center">
-
                     {user ? (
                         <>
                             <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -78,8 +70,16 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                                         </Dropdown.Trigger>
 
                                         <Dropdown.Content>
-                                            <Dropdown.Link href={route('editProfile')}>Profile</Dropdown.Link>
-                                            <Dropdown.Link href={route('logout')} method="post" as="button">
+                                            <Dropdown.Link
+                                                href={route("editProfile")}
+                                            >
+                                                Profile
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route("logout")}
+                                                method="post"
+                                                as="button"
+                                            >
                                                 Log Out
                                             </Dropdown.Link>
                                         </Dropdown.Content>
@@ -89,19 +89,15 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                         </>
                     ) : (
                         <>
-
                             <li>
-                                <NavLink
-                                    active = {logIn}
-                                    href = {route('login')}
-                                >
+                                <NavLink active={logIn} href={route("login")}>
                                     Log in
                                 </NavLink>
                             </li>
                             <li>
                                 <NavLink
-                                    active = {register}
-                                    href = {route('register')}
+                                    active={register}
+                                    href={route("register")}
                                 >
                                     Register
                                 </NavLink>
@@ -111,5 +107,5 @@ export default function Header({homePage = false, events = false, aboutUs = fals
                 </ul>
             </nav>
         </header>
-    )
+    );
 }

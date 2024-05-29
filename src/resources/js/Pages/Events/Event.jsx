@@ -2,12 +2,12 @@ import Header from "@/Components/Header";
 import GeneralLayout from "@/Layouts/GeneralLayout";
 import { Head, Link } from "@inertiajs/react";
 import { useEffect, useState } from "react";
-import Modal from '@/Components/Modal';
-import Mapa from "@/Components/Mapa";
+import Modal from "@/Components/Modal";
+import MapComponent from "@/Components/MapComponent";
 
-export default function Event({auth, event, apiKey, mapID}){
-
-    const [confirmingEventDeletion, setConfirmingEventDeletion] = useState(false);
+export default function Event({ auth, event, apiKey, mapID }) {
+    const [confirmingEventDeletion, setConfirmingEventDeletion] =
+        useState(false);
     const [confirmingLeaveEvent, setConfirmingLeaveEvent] = useState(false);
 
     const confirmEventDeletion = () => {
@@ -16,61 +16,65 @@ export default function Event({auth, event, apiKey, mapID}){
 
     const confirmLeaveEvent = () => {
         setConfirmingLeaveEvent(true);
-    }
+    };
 
     const closeModalDeleteEvent = () => {
         setConfirmingEventDeletion(false);
-    }
+    };
 
     const closeModalLeaveEvent = () => {
         setConfirmingLeaveEvent(false);
+    };
 
-    }
-
-    let [startDate, startHour] = event.start_date.split(' ')
-    let [endDate, endHour] = event.end_date.split(' ')
+    let [startDate, startHour] = event.start_date.split(" ");
+    let [endDate, endHour] = event.end_date.split(" ");
 
     return (
-            <>
+        <>
             <GeneralLayout>
                 <Head title={"Event - " + event.user.name} />
-                <Header/>
+                <Header />
 
                 <div className="flex flex-1 flex-row">
                     <div className=" w-full h-96 grid grid-row-2 grid-cols-2 *:bg-gray-300 dark:*:bg-slate-700 *:rounded *:w-fit *:p-3">
-                        <p className="col-span-2 text-6xl self-center"> {event.name} </p>
+                        <p className="col-span-2 text-6xl self-center">
+                            {" "}
+                            {event.name}{" "}
+                        </p>
                         <p className="text-4xl self-center"> {event.type} </p>
-                        <p className="text-4xl self-center"> {event.climbing_level.grade} </p>
+                        <p className="text-4xl self-center">
+                            {" "}
+                            {event.climbing_level.grade}{" "}
+                        </p>
                         <p className="text-4xl self-end text-center">
-                            {startDate}<br/>
+                            {startDate}
+                            <br />
                             {startHour}
                         </p>
                         <p className="text-4xl self-end text-center">
-                            {endDate}<br/>
+                            {endDate}
+                            <br />
                             {endHour}
                         </p>
                     </div>
                     <div className="w-full">
-                        <Mapa
+                        <MapComponent
                             eventLatitude={event.location.latitude}
                             eventLongitude={event.location.longitude}
                             envApiKey={apiKey}
                             envMapID={mapID}
                         />
-                        <p className="text-2xl ml-4">
-                            {event.location.name}
-                        </p>
+                        <p className="text-2xl ml-4">{event.location.name}</p>
                     </div>
                 </div>
-                    <p className="text-6xl mt-20">
-                        Participants:
-                    </p>
+                <p className="text-6xl mt-20">Participants:</p>
                 <div className=" w-auto max-h-96 scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white overflow-y-auto">
-                    {event.participants.map(participant => (
-                        <div key={participant.id} className="mt-4 p-3 text-4xl border-b-2 b-gray-200 flex justify-between">
-                            <p>
-                                {participant.name}
-                            </p>
+                    {event.participants.map((participant) => (
+                        <div
+                            key={participant.id}
+                            className="mt-4 p-3 text-4xl border-b-2 b-gray-200 flex justify-between"
+                        >
+                            <p>{participant.name}</p>
                             <p className="mr-11">
                                 {participant.climbing_level.grade}
                             </p>
@@ -85,7 +89,7 @@ export default function Event({auth, event, apiKey, mapID}){
                                 <div>
                                     <Link
                                         className="bg-green-500 text-white py-2 px-4 rounded mr-2"
-                                        href={route('updateEvent', event)}
+                                        href={route("updateEvent", event)}
                                     >
                                         Edit
                                     </Link>
@@ -99,41 +103,43 @@ export default function Event({auth, event, apiKey, mapID}){
                                     </button>
                                 </div>
                             </>
-                            ) : (
-
-                                event.participants.some(participant => participant.id === auth.user.id) ? (
-                                        <button
-                                            className="bg-red-500 text-white py-2 px-4 rounded mr-2"
-                                            onClick={confirmLeaveEvent}
-                                        >
-                                            Leave
-                                        </button>
-                                    ) : (
-                                        <Link
-                                            className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
-                                            href={route('joinEvent', event)}
-                                        >
-                                            Join
-                                        </Link>
-                                    )
-                            )
+                        ) : event.participants.some(
+                              (participant) => participant.id === auth.user.id
+                          ) ? (
+                            <button
+                                className="bg-red-500 text-white py-2 px-4 rounded mr-2"
+                                onClick={confirmLeaveEvent}
+                            >
+                                Leave
+                            </button>
                         ) : (
                             <Link
                                 className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
-                                href={route("login")}
+                                href={route("joinEvent", event)}
                             >
-                                Log in to join
+                                Join
                             </Link>
                         )
-                    }
+                    ) : (
+                        <Link
+                            className="bg-blue-500 text-white py-2 px-4 rounded mr-2"
+                            href={route("login")}
+                        >
+                            Log in to join
+                        </Link>
+                    )}
                 </div>
-                <Modal show={confirmingEventDeletion} onClose={closeModalDeleteEvent}>
+                <Modal
+                    show={confirmingEventDeletion}
+                    onClose={closeModalDeleteEvent}
+                >
                     <div className=" text-white p-9">
                         <p className="text-3xl text-center ">
                             Are you sure you want to delete this Event?
                         </p>
                         <div className="flex justify-center gap-5 mt-5 text-xl">
-                            <button className="p-3 bg-blue-700 rounded"
+                            <button
+                                className="p-3 bg-blue-700 rounded"
                                 onClick={closeModalDeleteEvent}
                             >
                                 Cancel
@@ -146,16 +152,19 @@ export default function Event({auth, event, apiKey, mapID}){
                             </Link>
                         </div>
                     </div>
-
                 </Modal>
 
-                <Modal show={confirmingLeaveEvent} onClose={closeModalLeaveEvent}>
+                <Modal
+                    show={confirmingLeaveEvent}
+                    onClose={closeModalLeaveEvent}
+                >
                     <div className=" text-white p-9">
                         <p className="text-3xl text-center ">
                             Are you sure you want to leave this Event?
                         </p>
                         <div className="flex justify-center gap-5 mt-5 text-xl">
-                            <button className="p-3 bg-blue-700 rounded"
+                            <button
+                                className="p-3 bg-blue-700 rounded"
                                 onClick={closeModalLeaveEvent}
                             >
                                 Cancel
@@ -170,9 +179,6 @@ export default function Event({auth, event, apiKey, mapID}){
                     </div>
                 </Modal>
             </GeneralLayout>
-
-
-
-            </>
-    )
+        </>
+    );
 }
