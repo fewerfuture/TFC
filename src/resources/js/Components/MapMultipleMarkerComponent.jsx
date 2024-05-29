@@ -17,12 +17,6 @@ export default function MapMultipleMarkerComponent({
         lng: -3.713155412568466
     };
 
-    const [open, setOpen] = useState(false);
-
-    useEffect(() => {
-
-    }, []);
-
     return (
         <APIProvider apiKey={envApiKey}>
             <div className="h-96 w-full">
