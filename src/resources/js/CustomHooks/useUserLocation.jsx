@@ -17,11 +17,11 @@ export function useUserLocation() {
                     console.error("Error getting user location", error);
                     setTimeout(() => {
                         setAttemptLocation(true);
-                    }, 5000);
+                    }, 1000);
                 }
             );
         } else {
-            console.error("This browser does not support geolocation");
+            console.warn("This browser does not support geolocation");
             setAttemptLocation(false);
         }
         setAttemptLocation(false);
@@ -32,7 +32,7 @@ export function useUserLocation() {
             if (!userLocation) {
                 setShowMap(true);
             }
-        }, 10000);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [userLocation]);

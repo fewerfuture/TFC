@@ -35,23 +35,23 @@ export default function Event({ auth, event, apiKey, mapID }) {
                 <Head title={"Event - " + event.user.name} />
                 <Header />
 
-                <div className="flex flex-1 flex-row">
-                    <div className=" w-full h-96 grid grid-row-2 grid-cols-2 *:bg-gray-300 dark:*:bg-slate-700 *:rounded *:w-fit *:p-3">
-                        <p className="col-span-2 text-6xl self-center">
-                            {" "}
-                            {event.name}{" "}
+                <div className="flex flex-1 lg:flex-row flex-col">
+                    <div className="w-full lg:h-96 grid grid-row-2 grid-cols-2 gap-4 *:bg-gray-300 dark:*:bg-slate-700 *:rounded *:w-fit *:p-3">
+                        <p className="max-w-full col-span-2 lg:text-6xl text-4xl self-center truncate">
+                            {event.name}
                         </p>
-                        <p className="text-4xl self-center"> {event.type} </p>
-                        <p className="text-4xl self-center">
-                            {" "}
-                            {event.climbing_level.grade}{" "}
+                        <p className="lg:text-4xl text-xl self-center">
+                            {event.type}
                         </p>
-                        <p className="text-4xl self-end text-center">
+                        <p className="lg:text-4xl text-xl self-center">
+                            {event.climbing_level.grade}
+                        </p>
+                        <p className="lg:text-4xl text-2xl self-end text-center">
                             {startDate}
                             <br />
                             {startHour}
                         </p>
-                        <p className="text-4xl self-end text-center">
+                        <p className="lg:text-4xl text-2xl self-end text-center">
                             {endDate}
                             <br />
                             {endHour}
@@ -64,15 +64,17 @@ export default function Event({ auth, event, apiKey, mapID }) {
                             envApiKey={apiKey}
                             envMapID={mapID}
                         />
-                        <p className="text-2xl ml-4">{event.location.name}</p>
+                        <p className="text-2xl ml-4">
+                            {event.location.name}
+                        </p>
                     </div>
                 </div>
-                <p className="text-6xl mt-20">Participants:</p>
+                <p className="lg:text-6xl text-3xl mt-20">Participants:</p>
                 <div className=" w-auto max-h-96 scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white overflow-y-auto">
                     {event.participants.map((participant) => (
                         <div
                             key={participant.id}
-                            className="mt-4 p-3 text-4xl border-b-2 b-gray-200 flex justify-between"
+                            className="mt-4 p-3 lg:text-4xl text-xl border-b-2 b-gray-200 flex justify-between"
                         >
                             <p>{participant.name}</p>
                             <p className="mr-11">
@@ -81,7 +83,7 @@ export default function Event({ auth, event, apiKey, mapID }) {
                         </div>
                     ))}
                 </div>
-                <div className="text-2xl mt-9 flex justify-between items-center">
+                <div className="lg:text-2xl mt-9 flex justify-between items-center">
                     <p> Created by: {event.user.name}</p>
                     {auth.user && auth.user.id ? (
                         auth.user.id == event.user_id ? (

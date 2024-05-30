@@ -2,7 +2,6 @@ import { Link, usePage } from "@inertiajs/react";
 import ApplicationLogo from "./ApplicationLogo";
 import NavLink from "./NavLink";
 import Dropdown from "./Dropdown";
-import { useEffect } from "react";
 
 export default function Header({
     homePage = false,
@@ -16,7 +15,7 @@ export default function Header({
     return (
         <header className="p-4 m-auto col-span-3 border-b-2">
             <nav className="w-full h-full m-auto flex flex-row justify-between">
-                <ul className="flex flex-row gap-16 *:self-center">
+                <ul className="flex flex-row lg:gap-16 gap-3 *:self-center">
                     <li>
                         <Link href={route("HomePage")}>
                             <ApplicationLogo className="w-10 h-10 fill-current text-gray-500" />
@@ -27,7 +26,7 @@ export default function Header({
                             Home Page
                         </NavLink>
                     </li>
-                    <li>
+                    {/* <li>
                         <NavLink active={events} href={route("inprogress")}>
                             My Events
                         </NavLink>
@@ -36,13 +35,13 @@ export default function Header({
                         <NavLink active={aboutUs} href={route("inprogress")}>
                             About Us
                         </NavLink>
-                    </li>
+                    </li> */}
                 </ul>
 
-                <ul className="flex flex-row gap-16 *:self-center">
+                <ul className="flex flex-row lg:gap-16 gap-3 *:self-center">
                     {user ? (
                         <>
-                            <div className="hidden sm:flex sm:items-center sm:ms-6">
+                            <div className=" sm:flex sm:items-center sm:ms-6">
                                 <div className="ms-3 relative">
                                     <Dropdown>
                                         <Dropdown.Trigger>

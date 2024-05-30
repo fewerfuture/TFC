@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import MapMultipleMarkerComponent from "@/Components/MapMultipleMarkerComponent";
 import { useUserLocation } from "@/CustomHooks/useUserLocation";
 import { CoordsDistance } from "@/Utils/CoordsDistance";
-import { useEffect, useInsertionEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage({
     auth,
@@ -37,7 +37,7 @@ export default function HomePage({
     const [endDateSearch, setEndDateSearch] = useState("");
     const [typeSearch, setTypeSearch] = useState("");
     const [myEventsSearch, setMyEventsSearch] = useState(false);
-    const [range, setRange] = useState(50);
+    const [range, setRange] = useState(0);
 
     const [userLocation, showMap] = useUserLocation();
 
@@ -78,9 +78,16 @@ export default function HomePage({
         setMyEventsSearch(!myEventsSearch);
     };
 
-    useEffect(() => {
-        console.log("range", range);
-    }, [range]);
+    const handleResetFilters = (e) => {
+        setNameSearch("")
+        setLevelSearch("0")
+        setFinishedSearch(false)
+        setStartDateSearch("")
+        setEndDateSearch("")
+        setTypeSearch("")
+        setMyEventsSearch(false)
+        setRange(0)
+    }
 
     // Events filtered
     const filteredEvents = eventData.filter(
@@ -94,7 +101,7 @@ export default function HomePage({
             (typeSearch == "" || typeSearch == event.type) &&
             (myEventsSearch ? event.user_id === auth.user.id : event.user_id) &&
             (range == 0 ||
-                (userLocation && // super important
+                (userLocation && // IMPORTANT!!!
                     CoordsDistance(
                         event.location.latitude,
                         event.location.longitude,
@@ -103,23 +110,13 @@ export default function HomePage({
                     ) <= range))
     );
 
-    useEffect(() => {
-        console.log("userloc", userLocation);
-
-        if (userLocation) {
-            console.log(
-                CoordsDistance(50, 50, userLocation.lat, userLocation.lng)
-            );
-        }
-    }, []);
-
     return (
         <>
             <GeneralLayout>
                 <Head title="Home page" />
                 <Header homePage={true} />
-                <div className="mt-7 grid lg:grid-cols-[200px_minmax(400px,1fr)_300px] lg:grid-rows-2 grid-cols-1 grid-rows-4 h-screen">
-                    <aside className="lg:row-span-2 flex flex-col items-center w-full">
+                <div className="mt-7 grid lg:grid-cols-[200px_minmax(400px,1fr)_300px] lg:grid-rows-2 grid-cols-1 grid-rows-9 h-screen">
+                    <aside className="lg:row-span-2 row-span-2 lg:p-0 mb-5 flex flex-col items-center w-full p-4 overflow-auto border-b-2 lg:border-none">
                         {auth.user && (
                             <Link
                                 className="bg-green-500 text-white py-2 px-4 rounded mr-2 text-xl"
@@ -127,21 +124,21 @@ export default function HomePage({
                             >
                                 Create event
                             </Link>
-                        ) }
+                        )}
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto">
                             <TextInput
                                 id="nameEvent"
                                 type="search"
                                 name="nameEvent"
-                                placeholder="Event Name"
+                                placeholder="Search Name"
                                 value={nameSearch}
                                 className="mt-1 block w-full"
                                 onChange={updateNameSearch}
                             />
                         </div>
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto">
                             <InputLabel
                                 htmlFor="start_date"
                                 value="Start Date"
@@ -152,12 +149,12 @@ export default function HomePage({
                                 type="date"
                                 name="start_date"
                                 value={inputValueSartDate}
-                                className="mt-1 block dark:calendar-color-white"
+                                className="mt-1 block dark:calendar-color-white w-full lg:w-auto"
                                 onChange={updateStartDataSearch}
                             />
                         </div>
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto">
                             <InputLabel htmlFor="end_date" value="End Date" />
 
                             <TextInput
@@ -165,12 +162,12 @@ export default function HomePage({
                                 type="date"
                                 name="end_date"
                                 value={inputValueEndDate}
-                                className="mt-1 block dark:calendar-color-white"
+                                className="mt-1 block dark:calendar-color-white w-full lg:w-auto"
                                 onChange={updateEndDataSearch}
                             />
                         </div>
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto">
                             <InputLabel htmlFor="type" value="Type of Event" />
 
                             <SelectInput
@@ -189,7 +186,7 @@ export default function HomePage({
                             </SelectInput>
                         </div>
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto">
                             <InputLabel
                                 htmlFor="levelEvent"
                                 value="Climbing Level Filter"
@@ -211,47 +208,58 @@ export default function HomePage({
                             </SelectInput>
                         </div>
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto">
                             <InputLabel htmlFor="range" value="Distance" />
+                            <span>{range}Km</span>
                             <input
                                 type="range"
                                 id="range"
                                 name="range"
                                 min="0"
-                                max="100"
+                                max="500"
                                 value={range}
                                 onChange={(e) => setRange(e.target.value)}
+                                className="w-full"
                             />
-                            <output>{range}Km</output>
+
                             <p className="text-gray-500"> 0 to not filter</p>
                         </div>
 
                         {auth.user && (
-                            <div className="mt-6">
+                            <div className="mt-6 w-full lg:w-auto flex items-center">
                                 <Checkbox
                                     id="myEvents"
                                     name="myEvents"
                                     value={myEventsSearch}
-                                    className=""
+                                    className="mr-2"
                                     onChange={updateMyEventsSearch}
                                 />
-                                <span className="ml-2">Show my events</span>
+                                <span>Show my events</span>
                             </div>
                         )}
 
-                        <div className="mt-6">
+                        <div className="mt-6 w-full lg:w-auto flex items-center">
                             <Checkbox
                                 id="finishedEvents"
                                 name="finishedEvents"
                                 value={finishedSearch}
-                                className=""
+                                className="mr-2"
                                 onChange={updateFinishedSearch}
                             />
-                            <span className="ml-2">Show finished events</span>
+                            <span>Show finished events</span>
+                        </div>
+
+                        <div className="mt-6">
+                            <p
+                                className="underline hover:cursor-pointer"
+                                onClick={handleResetFilters}
+                            >
+                                Reset Filters
+                            </p>
                         </div>
                     </aside>
 
-                    <main className="lg:row-span-2 overflow-y-scroll scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white">
+                    <main className="lg:row-span-2 row-span-3 lg:p-0 overflow-y-scroll scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white p-4 lg:border-none border-b-2 ">
                         {eventData.length > 0 ? (
                             filteredEvents.length > 0 ? (
                                 filteredEvents.map((event) => (
@@ -271,27 +279,24 @@ export default function HomePage({
                                 </p>
                             )
                         ) : (
-                            <>
-                                <div className="text-center m-16 text-2xl font-bold">
-                                    <p>
-                                        There are no events available at this
-                                        time.
-                                    </p>
-                                </div>
-                            </>
+                            <div className="text-center m-16 text-2xl font-bold">
+                                <p>
+                                    There are no events available at this time.
+                                </p>
+                            </div>
                         )}
                     </main>
 
-                    <aside className="flex flex-col px-5 ">
+                    <aside className="lg:row-span-1 row-span-2 flex flex-col px-5 overflow-y-scroll scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white">
                         <p className="text-3xl self-center mr-5">
                             Joined Events
                         </p>
-                        <div className="max-h-full overflow-auto scrollbar-thin scrollbar-webkit scrollbar-color-black dark:scrollbar-color-white flex flex-col">
+                        <div className="max-h-full overflow-auto flex flex-col">
                             {auth.user && auth.user.id ? (
                                 joinedUserEvents.length > 0 ? (
                                     joinedUserEvents.map((event) => (
                                         <Link
-                                            className="mr-5 border-b-2 flex justify-between items-center mt-3 "
+                                            className="mr-5 border-b-2 flex justify-between items-center mt-3"
                                             href={route("event", event.id)}
                                             key={event.id}
                                         >
@@ -319,7 +324,15 @@ export default function HomePage({
                         </div>
                     </aside>
 
-                    <aside className="">
+                    <aside className="lg:row-span-1 row-span-2">
+                        {!showMap && (
+                            <div className="flex space-x-2 justify-center items-center bg-white h-full dark:invert">
+                                <span className="sr-only">Loading...</span>
+                                <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                                <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                                <div className="h-8 w-8 bg-black rounded-full animate-bounce"></div>
+                            </div>
+                        )}
                         {showMap && (
                             <MapMultipleMarkerComponent
                                 events={filteredEvents}

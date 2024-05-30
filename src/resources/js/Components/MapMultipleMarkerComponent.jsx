@@ -1,27 +1,23 @@
 // src/MyMapComponent.js
 import React, { useEffect, useState } from "react";
-import {
-    APIProvider,
-    Map,
-    AdvancedMarker
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 
 export default function MapMultipleMarkerComponent({
     events,
     envApiKey,
     envMapID,
-    userCoords
+    userCoords,
 }) {
     const defaultLocation = {
         lat: 40.42579089487254,
-        lng: -3.713155412568466
+        lng: -3.713155412568466,
     };
 
     return (
         <APIProvider apiKey={envApiKey}>
-            <div className="h-96 w-full">
+            <div className="h-full w-full">
                 <Map
-                    defaultZoom={9}
+                    defaultZoom={userCoords ? 9 : 5}
                     defaultCenter={userCoords ?? defaultLocation}
                     mapId={envMapID}
                     zoomControl={false}
@@ -31,16 +27,12 @@ export default function MapMultipleMarkerComponent({
                     {events &&
                         events.map((event) => (
                             <AdvancedMarker
-                                key={event.id}
                                 position={{
                                     lat: parseFloat(event.location.latitude),
                                     lng: parseFloat(event.location.longitude),
                                 }}
-
-                            >
-
-                            </AdvancedMarker>
-
+                                onClick={() => window.location.reload()}
+                            />
                         ))}
                 </Map>
             </div>
