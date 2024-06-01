@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
 {
@@ -14,8 +14,8 @@ class Role extends Model
     protected $table = 'role';
 
     #region relaciones
-    public function Usuarios() : BelongsToMany{
-        return $this->BelongsToMany(User::class);
+    public function Usuarios() : HasMany{
+        return $this->hasMany(User::class);
     }
     #endregion
 }

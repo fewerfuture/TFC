@@ -9,9 +9,9 @@ import SelectInput from "@/Components/SelectInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useEffect } from "react";
 import MapInputComponent from "@/Components/MapInputComponent";
+import { useUserLocation } from "@/CustomHooks/useUserLocation";
 
 export default function UpdateEvent({
-    auth,
     event,
     climbing_level,
     start_date_original,
@@ -31,6 +31,12 @@ export default function UpdateEvent({
             lng: parseFloat(event.location.longitude),
         },
     });
+
+    const [userLocation, showMap] = useUserLocation();
+
+    useEffect(() => {
+        console.log(userLocation);
+    }, [])
 
     const type = [
         { id: 1, name: "Climbing Gym" },
@@ -167,7 +173,7 @@ export default function UpdateEvent({
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="location" value="Rute Name" />
+                        <InputLabel htmlFor="location" value="Route Name" />
 
                         <TextInput
                             id="location"
@@ -197,7 +203,8 @@ export default function UpdateEvent({
                             envApiKey={apiKey}
                             envMapID={mapID}
                             setData={setData}
-                            data={data}
+                            coordinates={data.coordinates}
+                            userCoords={userLocation}
                         />
 
                         <span className="text-gray-500">

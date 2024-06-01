@@ -11,6 +11,7 @@ import MapMultipleMarkerComponent from "@/Components/MapMultipleMarkerComponent"
 import { useUserLocation } from "@/CustomHooks/useUserLocation";
 import { CoordsDistance } from "@/Utils/CoordsDistance";
 import { useEffect, useState } from "react";
+import LoadingComponent from "@/Components/LoadingComponent";
 
 export default function HomePage({
     auth,
@@ -41,8 +42,6 @@ export default function HomePage({
 
     const [userLocation, showMap] = useUserLocation();
 
-    const formatDate = (date) => format(new Date(date), "dd-MM-yyyy");
-
     // Filters functions
     const updateNameSearch = (e) => {
         setNameSearch(e.target.value);
@@ -59,14 +58,14 @@ export default function HomePage({
     const updateStartDataSearch = (e) => {
         inputValueSartDate = e.target.value;
         e.target.value
-            ? setStartDateSearch(formatDate(e.target.value))
+            ? setStartDateSearch(format(e.target.value, "dd-MM-yyyy"))
             : setStartDateSearch("");
     };
 
     const updateEndDataSearch = (e) => {
         inputValueEndDate = e.target.value;
         e.target.value
-            ? setEndDateSearch(formatDate(e.target.value))
+            ? setEndDateSearch(format(e.target.value, "dd-MM-yyyy"))
             : setEndDateSearch("");
     };
 
@@ -208,22 +207,24 @@ export default function HomePage({
                             </SelectInput>
                         </div>
 
-                        <div className="mt-6 w-full lg:w-auto">
-                            <InputLabel htmlFor="range" value="Distance" />
-                            <span>{range}Km</span>
-                            <input
-                                type="range"
-                                id="range"
-                                name="range"
-                                min="0"
-                                max="500"
-                                value={range}
-                                onChange={(e) => setRange(e.target.value)}
-                                className="w-full"
-                            />
+                        {userLocation && (
+                            <div className="mt-6 w-full lg:w-auto">
+                                <InputLabel htmlFor="range" value="Distance" />
+                                <span>{range}Km</span>
+                                <input
+                                    type="range"
+                                    id="range"
+                                    name="range"
+                                    min="0"
+                                    max="500"
+                                    value={range}
+                                    onChange={(e) => setRange(e.target.value)}
+                                    className="w-full"
+                                />
 
-                            <p className="text-gray-500"> 0 to not filter</p>
-                        </div>
+                                <p className="text-gray-500"> 0 to not filter</p>
+                            </div>
+                        )}
 
                         {auth.user && (
                             <div className="mt-6 w-full lg:w-auto flex items-center">
@@ -325,21 +326,15 @@ export default function HomePage({
                     </aside>
 
                     <aside className="lg:row-span-1 row-span-2">
-                        {!showMap && (
-                            <div className="flex space-x-2 justify-center items-center bg-white h-full dark:invert">
-                                <span className="sr-only">Loading...</span>
-                                <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                                <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                                <div className="h-8 w-8 bg-black rounded-full animate-bounce"></div>
-                            </div>
-                        )}
-                        {showMap && (
+                        {showMap ? (
                             <MapMultipleMarkerComponent
                                 events={filteredEvents}
                                 envApiKey={apiKey}
                                 envMapID={mapID}
                                 userCoords={userLocation}
                             />
+                        ) : (
+                            <LoadingComponent/>
                         )}
                     </aside>
                 </div>

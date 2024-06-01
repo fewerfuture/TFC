@@ -52,8 +52,8 @@ class User extends Authenticatable
     ];
 
     #region Relaciones
-    public function Roles() : HasOne{
-        return $this->hasOne(Role::class);
+    public function Role() : BelongsTo{
+        return $this->belongsTo(Role::class);
     }
 
     public function Climbing_level() : BelongsTo {

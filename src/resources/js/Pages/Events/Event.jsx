@@ -6,8 +6,7 @@ import Modal from "@/Components/Modal";
 import MapComponent from "@/Components/MapComponent";
 
 export default function Event({ auth, event, apiKey, mapID }) {
-    const [confirmingEventDeletion, setConfirmingEventDeletion] =
-        useState(false);
+    const [confirmingEventDeletion, setConfirmingEventDeletion] = useState(false);
     const [confirmingLeaveEvent, setConfirmingLeaveEvent] = useState(false);
 
     const confirmEventDeletion = () => {

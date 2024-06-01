@@ -9,6 +9,7 @@ import SelectInput from "@/Components/SelectInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import MapInputComponent from "@/Components/MapInputComponent";
 import { useUserLocation } from "@/CustomHooks/useUserLocation";
+import LoadingComponent from "@/Components/LoadingComponent";
 
 export default function CreateEvent({
     auth,
@@ -162,7 +163,7 @@ export default function CreateEvent({
                     </div>
 
                     <div className="mt-4">
-                        <InputLabel htmlFor="location" value="Rute Name" />
+                        <InputLabel htmlFor="location" value="Route Name" />
 
                         <TextInput
                             id="location"
@@ -185,7 +186,7 @@ export default function CreateEvent({
                     <div className="mt-4">
                         <InputLabel htmlFor="coordinates" value="Location" />
 
-                        {showMap && (
+                        {showMap ? (
                             <MapInputComponent
                                 id="coordinates"
                                 name="coordinates"
@@ -193,9 +194,11 @@ export default function CreateEvent({
                                 envApiKey={apiKey}
                                 envMapID={mapID}
                                 setData={setData}
-                                data={data}
+                                coordinates={data.coordinates}
                                 userCoords={userLocation}
                             />
+                        ) : (
+                            <LoadingComponent />
                         )}
 
                         <span className="text-gray-500">

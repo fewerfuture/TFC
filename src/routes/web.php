@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminToolController;
+use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -8,7 +10,6 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,9 @@ Route::get('/inprogress', function() {
 
 
 Route::middleware('guest')->group(function () {
+
+    Route::get('/adminLogin', [AdminLoginController::class, 'create']);
+    Route::post('/adminLogin', [AdminLoginController::class, 'store'])->name('adminLogin');
 
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
@@ -70,6 +74,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+
+});
+
+Route::middleware('checkRole:2')->group(function () {
+    Route::get('/adminTool/users', [AdminToolController::class, 'indexUser'])->name('adminTool.users');
+    Route::get('/adminTool/events', [AdminToolController::class, 'indexEvent'])->name('adminTool.events');
+
+    Route::put('/adminTool/user/{user}', [AdminToolController::class, 'updateUser'])->name('adminTool.updateUser');
+    Route::delete('adminTool/user/{user}', [AdminToolController::class, 'destroyUser'])->name('adminTool.destroyUser');
+
+    Route::put('/adminTool/event/{event}', [AdminToolController::class, 'updateEvent'])->name('adminTool.updateEvent');
+    Route::delete('/adminTool/event/{event}', [AdminToolController::class, 'destroyEvent'])->name('adminTool.destroyEvent');
+
+    Route::put('/adminTool/location/{location}', [AdminToolController::class, 'updateLocation'])->name('adminTool.updateLocation');
 
 });
 

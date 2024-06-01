@@ -39,6 +39,7 @@ class Event extends Model
     }
     #endregion
 
+
     #region relaciones
     public function Climbing_level() : BelongsTo {
         return $this->belongsTo(Climbing_level::class);

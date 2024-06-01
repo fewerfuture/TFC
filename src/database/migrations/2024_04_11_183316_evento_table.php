@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('type');
             $table->boolean('finished');
 
-            $table->foreignId('location_id')->nullable()->constrained('location');
+            $table->foreignId('location_id')->nullable()->constrained('location')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->foreignId('climbing_level_id')->nullable()->constrained('climbing_level');
+            $table->foreignId('climbing_level_id')->nullable()->constrained('climbing_level')->cascadeOnDelete()->cascadeOnUpdate();;
 
-            $table->foreignId('user_id')->nullable()->constrained('user');
+            $table->foreignId('user_id')->nullable()->constrained('user')->cascadeOnDelete()->cascadeOnUpdate();;
 
             $table->timestamps();
         });

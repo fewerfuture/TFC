@@ -2,11 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RolCheck
+class CheckRol
 {
     /**
      * Handle an incoming request.
@@ -15,9 +16,9 @@ class RolCheck
      */
     public function handle(Request $request, Closure $next, $rol): Response
     {
-        if (auth()->user()->rol === $rol)
+        if (auth()->check() && auth()->user()->role_id == $rol )
             return $next($request);
         else
-            return redirect('/');
+            return redirect(RouteServiceProvider::HOME);
     }
 }

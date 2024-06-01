@@ -2,11 +2,11 @@ import { Link, usePage } from "@inertiajs/react";
 import ApplicationLogo from "./ApplicationLogo";
 import NavLink from "./NavLink";
 import Dropdown from "./Dropdown";
+import { useEffect } from "react";
 
 export default function Header({
     homePage = false,
-    events = false,
-    aboutUs = false,
+    adminTool = false,
     logIn = false,
     register = false,
 }) {
@@ -26,12 +26,14 @@ export default function Header({
                             Home Page
                         </NavLink>
                     </li>
+                    {(user != null && user.role_id === 2) && (
+                        <li>
+                            <NavLink active={adminTool} href={route("adminTool.users")}>
+                                AdminTool
+                            </NavLink>
+                        </li>
+                    )}
                     {/* <li>
-                        <NavLink active={events} href={route("inprogress")}>
-                            My Events
-                        </NavLink>
-                    </li>
-                    <li>
                         <NavLink active={aboutUs} href={route("inprogress")}>
                             About Us
                         </NavLink>
