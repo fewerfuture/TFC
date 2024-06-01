@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -20,7 +21,7 @@ class AdminToolController extends Controller
     {
 
         return Inertia::render('Admin/AdminUserControlPanel', [
-            'users' => User::with(['Role', 'Climbing_level'])->get(),
+            'users' => User::where('id' , '!=', Auth::id())->with(['Role', 'Climbing_level'])->get(),
             'climbing_levels' => Climbing_level::get(),
 
         ]);
