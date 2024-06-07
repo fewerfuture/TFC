@@ -5,6 +5,7 @@ import {
     Map,
     AdvancedMarker,
     InfoWindow,
+    Pin
 } from "@vis.gl/react-google-maps";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -27,10 +28,6 @@ export default function MapMultipleMarkerComponent({
     const handleGoEvent = (id) => {
         Inertia.get(`/event/${parseInt(id)}`);
     }
-
-    useEffect(() => {
-        console.log(open);
-    }, [open])
 
     return (
         <APIProvider apiKey={envApiKey}>
@@ -62,6 +59,8 @@ export default function MapMultipleMarkerComponent({
                                 />
                             </>
                         ))}
+
+                        <Pin ></Pin>
 
                     {open.state && (
                         <InfoWindow

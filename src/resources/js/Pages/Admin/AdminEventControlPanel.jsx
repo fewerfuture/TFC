@@ -81,33 +81,34 @@ export default function AdminEventControlPanel({
     return (
         <AdminLayout events={true}>
             <div className="px-3 py-4 flex justify-center">
+                <div className="overflow-x-auto w-full">
                 <table className="w-full text-md shadow-md rounded mb-4">
                     <tbody>
                         <tr className="border-b">
-                            <th className="text-left p-3 px-5">ID</th>
-                            <th className="text-left p-3 px-5">Name</th>
-                            <th className="text-left p-3 px-5">Start Date</th>
-                            <th className="text-left p-3 px-5">End Date</th>
-                            <th className="text-left p-3 px-5">Type</th>
-                            <th className="text-left p-3 px-5">Finished</th>
-                            <th className="text-left p-3 px-5">Location</th>
-                            <th className="text-left p-3 px-5">
+                            <th className="text-left p-3">ID</th>
+                            <th className="text-left p-3">Name</th>
+                            <th className="text-left p-3">Start Date</th>
+                            <th className="text-left p-3">End Date</th>
+                            <th className="text-left p-3">Type</th>
+                            <th className="text-left p-3">Finished</th>
+                            <th className="text-left p-3">Location</th>
+                            <th className="text-left p-3">
                                 Climbing Level
                             </th>
-                            <th className="text-left p-3 px-5">Creator</th>
-                            <th className="text-left p-3 px-5">Actions</th>
+                            <th className="text-left p-3">Creator</th>
+                            <th className="text-left p-3">Actions</th>
                         </tr>
                         {eventData.map((event) => (
                             <tr
                                 key={event.id}
                                 className="border-b hover:bg-orange-100 dark:hover:bg-blue-900"
                             >
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <p className="bg-transparent py-2">
                                         {event.id}
                                     </p>
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <TextInput
                                         type="text"
                                         value={event.name}
@@ -120,7 +121,7 @@ export default function AdminEventControlPanel({
                                         }
                                     />
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <TextInput
                                         type="datetime-local"
                                         value={formatDateToInput(
@@ -138,7 +139,7 @@ export default function AdminEventControlPanel({
                                         className="dark:calendar-color-white py-2"
                                     />
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <TextInput
                                         type="datetime-local"
                                         value={formatDateToInput(
@@ -156,7 +157,7 @@ export default function AdminEventControlPanel({
                                         className="dark:calendar-color-white py-2"
                                     />
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <SelectInput
                                         type="text"
                                         value={event.type}
@@ -178,7 +179,7 @@ export default function AdminEventControlPanel({
                                         ))}
                                     </SelectInput>
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <SelectInput
                                         value={event.finished}
                                         onChange={(e) =>
@@ -193,7 +194,7 @@ export default function AdminEventControlPanel({
                                         <option value="1">Yes</option>
                                     </SelectInput>
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <button
                                         type="button"
                                         onClick={() =>
@@ -204,7 +205,7 @@ export default function AdminEventControlPanel({
                                         Edit
                                     </button>
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <SelectInput
                                         value={event.climbing_level_id}
                                         onChange={(e) =>
@@ -225,7 +226,7 @@ export default function AdminEventControlPanel({
                                         ))}
                                     </SelectInput>
                                 </td>
-                                <td className="p-3 px-5">
+                                <td className="p-3">
                                     <TextInput
                                         type="text"
                                         value={event.user.name}
@@ -239,7 +240,7 @@ export default function AdminEventControlPanel({
                                         disabled
                                     />
                                 </td>
-                                <td className="p-3 px-5 flex justify-end">
+                                <td className="p-3 flex justify-end">
                                     <button
                                         type="button"
                                         onClick={() => handleSaveEvent(event)}
@@ -341,6 +342,7 @@ export default function AdminEventControlPanel({
                         </Modal>
                     </tbody>
                 </table>
+                </div>
             </div>
         </AdminLayout>
     );

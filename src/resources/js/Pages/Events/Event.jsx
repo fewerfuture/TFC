@@ -134,8 +134,8 @@ export default function Event({ auth, event, apiKey, mapID }) {
                     show={confirmingEventDeletion}
                     onClose={closeModalDeleteEvent}
                 >
-                    <div className=" text-white p-9">
-                        <p className="text-3xl text-center ">
+                    <div className="text-black dark:text-white p-9">
+                        <p className="text-3xl text-center">
                             Are you sure you want to delete this Event?
                         </p>
                         <div className="flex justify-center gap-5 mt-5 text-xl">

@@ -115,7 +115,7 @@ export default function HomePage({
                 <Head title="Home page" />
                 <Header homePage={true} />
                 <div className="mt-7 grid lg:grid-cols-[200px_minmax(400px,1fr)_300px] lg:grid-rows-2 grid-cols-1 grid-rows-9 h-screen">
-                    <aside className="lg:row-span-2 row-span-2 lg:p-0 mb-5 flex flex-col items-center w-full p-4 overflow-auto border-b-2 lg:border-none">
+                    <aside className="lg:row-span-2 row-span-2 lg:p-0 mb-5 flex flex-col items-start w-full p-4 overflow-auto border-b-2 lg:border-none">
                         {auth.user && (
                             <Link
                                 className="bg-green-500 text-white py-2 px-4 rounded mr-2 text-xl"
