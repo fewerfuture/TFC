@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-06-2024 a las 20:22:24
+-- Tiempo de generación: 12-06-2024 a las 18:44:15
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `tfc`
 --
+CREATE DATABASE IF NOT EXISTS `tfc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `tfc`;
 
 -- --------------------------------------------------------
 
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `climbing_level`
 --
 
+DROP TABLE IF EXISTS `climbing_level`;
 CREATE TABLE `climbing_level` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `grade` varchar(255) NOT NULL,
@@ -39,6 +42,7 @@ CREATE TABLE `climbing_level` (
 -- Estructura de tabla para la tabla `event`
 --
 
+DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -59,6 +63,7 @@ CREATE TABLE `event` (
 -- Estructura de tabla para la tabla `event_user`
 --
 
+DROP TABLE IF EXISTS `event_user`;
 CREATE TABLE `event_user` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `event_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -71,6 +76,7 @@ CREATE TABLE `event_user` (
 -- Estructura de tabla para la tabla `location`
 --
 
+DROP TABLE IF EXISTS `location`;
 CREATE TABLE `location` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -84,6 +90,7 @@ CREATE TABLE `location` (
 -- Estructura de tabla para la tabla `migrations`
 --
 
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(255) NOT NULL,
@@ -96,6 +103,7 @@ CREATE TABLE `migrations` (
 -- Estructura de tabla para la tabla `personal_access_tokens`
 --
 
+DROP TABLE IF EXISTS `personal_access_tokens`;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `tokenable_type` varchar(255) NOT NULL,
@@ -115,6 +123,7 @@ CREATE TABLE `personal_access_tokens` (
 -- Estructura de tabla para la tabla `role`
 --
 
+DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `role_name` varchar(255) NOT NULL
@@ -126,6 +135,7 @@ CREATE TABLE `role` (
 -- Estructura de tabla para la tabla `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -278,6 +288,15 @@ ALTER TABLE `event_user`
 ALTER TABLE `user`
   ADD CONSTRAINT `user_climbing_level_id_foreign` FOREIGN KEY (`climbing_level_id`) REFERENCES `climbing_level` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+--
+-- Eventos
+--
+DROP EVENT IF EXISTS `update_finished_events`$$
+CREATE DEFINER=`root`@`localhost` EVENT `update_finished_events` ON SCHEDULE EVERY 1 DAY STARTS '2024-05-17 00:00:00' ON COMPLETION PRESERVE ENABLE DO UPDATE event SET finished = TRUE WHERE end_date <= CURDATE() AND finished = FALSE$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
